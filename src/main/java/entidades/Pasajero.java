@@ -80,8 +80,11 @@ public class Pasajero implements Comparable<Pasajero> {
 
     @Override
     public int compareTo(Pasajero o) {
-        int ci= Integer.parseInt(this.cedula);
-        int recive= Integer.parseInt(o.cedula);
+        String thisCedula = cedula.replaceAll("[^0-9]", "");
+        String recivedCi = o.cedula.replaceAll("[^0-9]", "");
+
+        int ci= Integer.parseInt(thisCedula);
+        int recive= Integer.parseInt(recivedCi);
 
         return Integer.compare(ci,recive);
     }

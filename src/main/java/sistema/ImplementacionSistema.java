@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 public class ImplementacionSistema implements Sistema {
     ABBPasajeros ABBPasajeros;
     ABBPasajeros ABBPasajerosPlatino;
-    ABBGenerico<Pasajero> ABBPasajerosFrecuente;
-    ABBGenerico<Pasajero> ABBPasajerosEstandar;
+    ABBPasajeros ABBPasajerosFrecuente;
+    ABBPasajeros ABBPasajerosEstandar;
     ABBGenerico<Aerolinea> ABBAerolineas;
 
     @Override
@@ -19,9 +19,9 @@ public class ImplementacionSistema implements Sistema {
         if (maxAeropuertos <= 5) return Retorno.error1("Canitdad de aeropuertos menor o igual a 5");
         if (maxAerolineas <= 3) return Retorno.error2("Cantidad de aerolineas menor o igual a 3");
          ABBPasajeros = new ABBPasajeros();
-         ABBPasajerosPlatino = new ABBGenerico();
-         ABBPasajerosFrecuente = new ABBGenerico();
-         ABBPasajerosEstandar = new ABBGenerico();
+         ABBPasajerosPlatino = new ABBPasajeros();
+         ABBPasajerosFrecuente = new ABBPasajeros();
+         ABBPasajerosEstandar = new ABBPasajeros();
          ABBAerolineas = new ABBGenerico();
         return Retorno.ok();
     }
@@ -38,11 +38,15 @@ public class ImplementacionSistema implements Sistema {
         if (!validarCedula(cedula)) {
             return Retorno.error2("La cedula tiene un formato invalido!");
         }
-        Pasajero p= new Pasajero(cedula,nombre,telefono,Categoria.ESTANDAR);
+        Pasajero p= new Pasajero(cedula);
 
         if (ABBPasajeros.pertenece(p)){
             return Retorno.error3("El pasajero ya existe en el Sistema!");
         }
+        p.setNombre(nombre);
+        p.setTelefono(telefono);
+        p.setCategoria(categoria);
+
         ABBPasajeros.insertar(p);
         if (p.getCategoria()==Categoria.PLATINO){ABBPasajerosPlatino.insertar(p);}
         if (p.getCategoria()==Categoria.FRECUENTE){ABBPasajerosFrecuente.insertar(p);}
@@ -70,12 +74,13 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno buscarPasajero(String cedula) {
-        if (cedula.isEmpty() || cedula==null){return Retorno.error1("La cedula esta vacia o es null!");}
+        if (cedula==null || cedula.isEmpty()){return Retorno.error1("La cedula esta vacia o es null!");}
         if (!validarCedula(cedula)){return Retorno.error2("La cedula no tiene formato valido!");}
         Pasajero p= new Pasajero(cedula);
         if (ABBPasajeros.obtener(p)==null){return Retorno.error3("El pasajero no existe!");}
         System.out.println(ABBPasajeros.obtener(p).toString());
         return Retorno.ok();
+        return Retorno.ok
     }
 
     @Override
