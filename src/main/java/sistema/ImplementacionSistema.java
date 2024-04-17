@@ -12,17 +12,17 @@ public class ImplementacionSistema implements Sistema {
     ABBPasajeros ABBPasajerosPlatino;
     ABBPasajeros ABBPasajerosFrecuente;
     ABBPasajeros ABBPasajerosEstandar;
-    ABBGenerico<Aerolinea> ABBAerolineas;
+    ABBAerolineas ABBAerolineas;
 
     @Override
     public Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas) {
         if (maxAeropuertos <= 5) return Retorno.error1("Canitdad de aeropuertos menor o igual a 5");
         if (maxAerolineas <= 3) return Retorno.error2("Cantidad de aerolineas menor o igual a 3");
-         ABBPasajeros = new ABBPasajeros();
-         ABBPasajerosPlatino = new ABBPasajeros();
-         ABBPasajerosFrecuente = new ABBPasajeros();
-         ABBPasajerosEstandar = new ABBPasajeros();
-         ABBAerolineas = new ABBGenerico();
+        ABBPasajeros = new ABBPasajeros();
+        ABBPasajerosPlatino = new ABBPasajeros();
+        ABBPasajerosFrecuente = new ABBPasajeros();
+        ABBPasajerosEstandar = new ABBPasajeros();
+        ABBAerolineas = new ABBAerolineas();
         return Retorno.ok();
     }
 
@@ -38,9 +38,9 @@ public class ImplementacionSistema implements Sistema {
         if (!validarCedula(cedula)) {
             return Retorno.error2("La cedula tiene un formato invalido!");
         }
-        Pasajero p= new Pasajero(cedula);
+        Pasajero p = new Pasajero(cedula);
 
-        if (ABBPasajeros.pertenece(p)){
+        if (ABBPasajeros.pertenece(p)) {
             return Retorno.error3("El pasajero ya existe en el Sistema!");
         }
         p.setNombre(nombre);
@@ -48,9 +48,15 @@ public class ImplementacionSistema implements Sistema {
         p.setCategoria(categoria);
 
         ABBPasajeros.insertar(p);
-        if (p.getCategoria()==Categoria.PLATINO){ABBPasajerosPlatino.insertar(p);}
-        if (p.getCategoria()==Categoria.FRECUENTE){ABBPasajerosFrecuente.insertar(p);}
-        if (p.getCategoria()==Categoria.ESTANDAR){ABBPasajerosEstandar.insertar(p);}
+        if (p.getCategoria() == Categoria.PLATINO) {
+            ABBPasajerosPlatino.insertar(p);
+        }
+        if (p.getCategoria() == Categoria.FRECUENTE) {
+            ABBPasajerosFrecuente.insertar(p);
+        }
+        if (p.getCategoria() == Categoria.ESTANDAR) {
+            ABBPasajerosEstandar.insertar(p);
+        }
         return Retorno.ok();
     }
 
@@ -74,33 +80,63 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno buscarPasajero(String cedula) {
-        if (cedula==null || cedula.isEmpty()){return Retorno.error1("La cedula esta vacia o es null!");}
-        if (!validarCedula(cedula)){return Retorno.error2("La cedula no tiene formato valido!");}
-        Pasajero p= new Pasajero(cedula);
-        if (ABBPasajeros.obtener(p)==null){return Retorno.error3("El pasajero no existe!");}
-        System.out.println(ABBPasajeros.obtener(p).toString());
-        return Retorno.ok();
-        return Retorno.ok
+        if (cedula == null || cedula.isEmpty()) {
+            return Retorno.error1("La cedula esta vacia o es null!");
+        }
+        if (!validarCedula(cedula)) {
+            return Retorno.error2("La cedula no tiene formato valido!");
+        }
+        Pasajero p = new Pasajero(cedula);
+        if (ABBPasajeros.obtener(p) == null) {
+            return Retorno.error3("El pasajero no existe!");
+        }
+        int elementorRecorridos = ABBPasajeros.cantidadElementosRecorridos(p);
+        return Retorno.ok(elementorRecorridos, ABBPasajeros.obtener(p).toString());
+
     }
 
     @Override
     public Retorno listarPasajerosAscendente() {
-        return Retorno.noImplementada();
+        return Retorno.ok(ABBPasajeros.listarAscendente());
     }
 
     @Override
     public Retorno listarPasajerosPorCategoria(Categoria categoria) {
-        return Retorno.noImplementada();
+        if (categoria == null) {
+            return Retorno.ok("");
+        }
+        if (categoria.getTexto().equals("Frecuente")) {
+            return Retorno.ok(ABBPasajerosFrecuente.listarAscendente());
+        }
+        if (categoria.getTexto().equals("Estándar")) {
+            return Retorno.ok(ABBPasajerosEstandar.listarAscendente());
+        }
+        if (categoria.getTexto().equals("Platino")) {
+            return Retorno.ok(ABBPasajerosPlatino.listarAscendente());
+        }
+        return Retorno.ok("");
     }
 
+    private int cantidadAerolineas(){
+        return ABBAerolineas.cantidadAerolineasRegistradas();
+    }
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
-        return Retorno.noImplementada();
+        // queda ver lo del minimo o maximo de aerolineas
+        if (codigo==null || codigo.isEmpty() || nombre==null || nombre.isEmpty()){
+            return Retorno.error2("Codigo o Nombre vacios o nulos!");
+        }
+        Aerolinea a= new Aerolinea(codigo,nombre);
+        if (ABBAerolineas.pertenece(a)){
+            return Retorno.error3("Aerolinea ya registrada!");
+        }
+        ABBAerolineas.insertar(a);
+        return Retorno.ok();
     }
 
     @Override
     public Retorno listarAerolineasDescendente() {
-        return Retorno.noImplementada();
+        return Retorno.ok(ABBAerolineas.listarDescendente());
     }
 
     @Override

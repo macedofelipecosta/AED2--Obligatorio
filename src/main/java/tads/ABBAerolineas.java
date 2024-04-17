@@ -1,12 +1,9 @@
 package tads;
 
-import entidades.Pasajero;
-
-public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
-
+public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
     private NodoABB raiz;
 
-    public void insertar(Pasajero dato) {
+    public void insertar(Aerolinea dato) {
         if (raiz == null) {
             raiz = new NodoABB(dato);
         } else {
@@ -14,7 +11,7 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
         }
     }
 
-    private void insertar(NodoABB nodo, Pasajero dato) {
+    private void insertar(NodoABB nodo, Aerolinea dato) {
         if (dato.compareTo(nodo.dato) < 0) {
             if (nodo.izq == null) {
                 nodo.izq = new NodoABB(dato);
@@ -30,11 +27,11 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
         }
     }
 
-    public boolean pertenece(Pasajero dato) {
+    public boolean pertenece(Aerolinea dato) {
         return pertenece(raiz, dato);
     }
 
-    private boolean pertenece(NodoABB nodo, Pasajero dato) {
+    private boolean pertenece(NodoABB nodo, Aerolinea dato) {
         if (nodo != null) {
             if (nodo.dato.equals(dato))
                 return true;
@@ -48,11 +45,11 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
         }
     }
 
-    public Pasajero obtener(Pasajero dato) {
+    public Aerolinea obtener(Aerolinea dato) {
         return obtener(raiz, dato);
     }
 
-    private Pasajero obtener(NodoABB nodo, Pasajero dato) {
+    private Aerolinea obtener(NodoABB nodo, Aerolinea dato) {
         if (nodo != null) {
             if (nodo.dato.equals(dato))
                 return nodo.dato;
@@ -66,17 +63,34 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
         }
     }
 
-    public int cantidadElementosRecorridos(Pasajero dato){
-       return cantidadElementosRecorridos(raiz, dato,0);
+    public int cantidadElementosRecorridos(Aerolinea dato) {
+        return cantidadElementosRecorridos(raiz, dato, 0);
     }
-    private int cantidadElementosRecorridos(NodoABB nodo, Pasajero dato, int num) {
-        if (nodo==null){return 0;}
-        if (nodo.dato.equals(dato)){return num;}
-        if (dato.compareTo(nodo.dato) < 0) {
-            return cantidadElementosRecorridos(nodo.izq, dato, num+1);
-        } else {
-            return cantidadElementosRecorridos(nodo.der, dato,num+1);
+
+    private int cantidadElementosRecorridos(NodoABB nodo, Aerolinea dato, int num) {
+        if (nodo == null) {
+            return num;
         }
+        if (nodo.dato.equals(dato)) {
+            return num;
+        }
+        if (dato.compareTo(nodo.dato) < 0) {
+            return cantidadElementosRecorridos(nodo.izq, dato, num + 1);
+        } else {
+            return cantidadElementosRecorridos(nodo.der, dato, num + 1);
+        }
+    }
+
+    public int cantidadAerolineasRegistradas() {
+        return cantidadAerolineasRegistradas(raiz, 0);
+    }
+
+    private int cantidadAerolineasRegistradas(NodoABB nodo, int num) {
+        if (nodo == null) {
+            return num;
+        }
+        return cantidadAerolineasRegistradas(nodo.izq, num + 1) +
+                cantidadAerolineasRegistradas(nodo.der, num + 1);
     }
 
     public String listarAscendente() {
@@ -91,13 +105,22 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
         }
     }
 
+    public String listarDescendente(){return listarDescendente(raiz);}
+    private String listarDescendente(NodoABB nodo){
+        if (nodo != null) {
+            return listarAscendente(nodo.der) + "" + nodo.dato + "|" + listarAscendente(nodo.izq);
+        } else {
+            return "";
+        }
+    }
     private class NodoABB {
-        private Pasajero dato;
+        private Aerolinea dato;
         private NodoABB izq;
         private NodoABB der;
 
-        public NodoABB(Pasajero dato) {
+        public NodoABB(Aerolinea dato) {
             this.dato = dato;
         }
     }
+
 }
