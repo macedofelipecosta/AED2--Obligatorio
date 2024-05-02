@@ -13,6 +13,7 @@ public class ImplementacionSistema implements Sistema {
     ABBPasajeros ABBPasajerosFrecuente;
     ABBPasajeros ABBPasajerosEstandar;
     ABBAerolineas ABBAerolineas;
+    ABBAeropuertos ABBAeropuertos;
 
     @Override
     public Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas) {
@@ -23,6 +24,7 @@ public class ImplementacionSistema implements Sistema {
         ABBPasajerosFrecuente = new ABBPasajeros();
         ABBPasajerosEstandar = new ABBPasajeros();
         ABBAerolineas = new ABBAerolineas();
+        ABBAeropuertos = new ABBAeropuertos();
         return Retorno.ok();
     }
 
@@ -117,17 +119,18 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.ok("");
     }
 
-    private int cantidadAerolineas(){
+    private int cantidadAerolineas() {
         return ABBAerolineas.cantidadAerolineasRegistradas();
     }
+
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aerolineas
-        if (codigo==null || codigo.isEmpty() || nombre==null || nombre.isEmpty()){
+        if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
-        Aerolinea a= new Aerolinea(codigo,nombre);
-        if (ABBAerolineas.pertenece(a)){
+        Aerolinea a = new Aerolinea(codigo, nombre);
+        if (ABBAerolineas.pertenece(a)) {
             return Retorno.error3("Aerolinea ya registrada!");
         }
         ABBAerolineas.insertar(a);
@@ -141,7 +144,16 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        return Retorno.noImplementada();
+        // queda ver lo del minimo o maximo de aerolineas
+        if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
+            return Retorno.error2("Codigo o Nombre vacios o nulos!");
+        }
+        Aeropuerto a = new Aeropuerto(codigo, nombre);
+        if (ABBAeropuertos.pertenece(a)) {
+            return Retorno.error3("Aeropuerto ya registrado!");
+        }
+        ABBAeropuertos.insertar(a);
+        return Retorno.ok();
     }
 
     @Override
