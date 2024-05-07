@@ -82,16 +82,16 @@ public class ABBAeropuertos<Aeropuerto extends Comparable<Aeropuerto>>{
         }
     }
 
-    public int cantidadAerolineasRegistradas() {
-        return cantidadAerolineasRegistradas(raiz, 0);
+    public int cantidadAeropuertosRegistradas() {
+        return cantidadAeropuertosRegistradas(raiz, 0);
     }
 
-    private int cantidadAerolineasRegistradas(NodoABB nodo, int num) {
+    private int cantidadAeropuertosRegistradas(NodoABB nodo, int num) {
         if (nodo == null) {
             return num;
         }
-        return cantidadAerolineasRegistradas(nodo.izq, num + 1) +
-                cantidadAerolineasRegistradas(nodo.der, num + 1);
+        return cantidadAeropuertosRegistradas(nodo.izq, num + 1) +
+                cantidadAeropuertosRegistradas(nodo.der, num + 1);
     }
 
     public String listarAscendente() {

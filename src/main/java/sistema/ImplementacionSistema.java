@@ -15,6 +15,11 @@ public class ImplementacionSistema implements Sistema {
     ABBAerolineas ABBAerolineas;
     ABBAeropuertos ABBAeropuertos;
 
+    Grafo Conexiones;
+
+    private int maxAeropuertos;
+    private int maxAerolineas;
+
     @Override
     public Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas) {
         if (maxAeropuertos <= 5) return Retorno.error1("Canitdad de aeropuertos menor o igual a 5");
@@ -25,6 +30,9 @@ public class ImplementacionSistema implements Sistema {
         ABBPasajerosEstandar = new ABBPasajeros();
         ABBAerolineas = new ABBAerolineas();
         ABBAeropuertos = new ABBAeropuertos();
+        Conexiones = new Grafo(maxAeropuertos);
+        this.maxAerolineas = maxAerolineas;
+        this.maxAeropuertos = maxAeropuertos;
         return Retorno.ok();
     }
 
@@ -119,13 +127,12 @@ public class ImplementacionSistema implements Sistema {
         return Retorno.ok("");
     }
 
-    private int cantidadAerolineas() {
-        return ABBAerolineas.cantidadAerolineasRegistradas();
-    }
-
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aerolineas
+        if (ABBAerolineas.cantidadAerolineasRegistradas() >= maxAerolineas) {
+            return Retorno.error1("Cantidad maxima de Aerolineas alcanzada");
+        }
         if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
@@ -144,7 +151,11 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        // queda ver lo del minimo o maximo de aerolineas
+        // queda ver lo del minimo o maximo de aeropuertos
+        if (ABBAeropuertos.cantidadAeropuertosRegistradas() >= maxAeropuertos) {
+            return Retorno.error1("Cantidad maxima de Aeropuertos alcanzado ");
+        }
+
         if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
@@ -158,7 +169,29 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarConexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, double kilometros) {
-        return Retorno.noImplementada();
+        if (kilometros <= 0) {
+            return Retorno.error1("Kilometros menor o igual a cero!");
+        }
+        if (codigoAeropuertoDestino == null || codigoAeropuertoDestino.isEmpty() || codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isEmpty()) {
+            return Retorno.error2("Codigo Aeropuerto origen o destino es nulo o vacio!");
+        }
+        Aeropuerto AeropuertoOrigen = new Aeropuerto(codigoAeropuertoOrigen);
+        if (!ABBAeropuertos.pertenece(AeropuertoOrigen)) {
+            return Retorno.error3("Aeropuerto de origen no existe!");
+        }
+        Aeropuerto AeropuertoDestino = new Aeropuerto(codigoAeropuertoDestino);
+        if (!ABBAeropuertos.pertenece(AeropuertoDestino)) {
+            return Retorno.error4("Aeropuerto de destino no existe!");
+        }
+
+        if (Conexiones.obtenerArista(codigoAeropuertoOrigen, codigoAeropuertoDestino).getKilometros() == kilometros) {
+            return Retorno.error5("Ya existe esta conexion!");
+        }
+        Conexiones.agregarVertice(codigoAeropuertoOrigen);
+        Conexiones.agregarVertice(codigoAeropuertoDestino);
+        Conexiones.agregarArista(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+
+        return Retorno.ok();
     }
 
     @Override

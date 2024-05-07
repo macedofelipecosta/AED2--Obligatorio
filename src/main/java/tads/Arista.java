@@ -1,17 +1,17 @@
 package tads;
 
 public class Arista {
-    public int kilometros;
+    public double kilometros;
 
-    public Arista(int kilometros) {
+    public Arista(double kilometros) {
         this.kilometros = kilometros;
     }
 
-    public int getKilometros() {
+    public double getKilometros() {
         return kilometros;
     }
 
-    public void setKilometros(int kilometros) {
+    public void setKilometros(double kilometros) {
         this.kilometros = kilometros;
     }
 

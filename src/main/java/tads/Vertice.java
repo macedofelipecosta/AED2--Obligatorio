@@ -3,18 +3,18 @@ package tads;
 import java.util.Objects;
 
 public class Vertice {
-    private String nombre;
+    private String codigo;
 
-    public Vertice(String nombre) {
-        this.nombre = nombre;
+    public Vertice(String codigo) {
+        this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     @Override
@@ -22,13 +22,13 @@ public class Vertice {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vertice vertice = (Vertice) o;
-        return Objects.equals(nombre, vertice.nombre);
+        return Objects.equals(codigo, vertice.codigo);
     }
 
     @Override
     public String toString() {
-        return "Vertice{" +
-                "nombre='" + nombre + '\'' +
+        return "Aeropuerto{" +
+                "codigo='" + codigo + '\'' +
                 '}';
     }
 }

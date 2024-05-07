@@ -13,16 +13,16 @@ public class Grafo {
             aristas = new Arista[maxVertices][maxVertices];
         }
 
-        public void agregarVertice(String nombreVertice) {
+        public void agregarVertice(String codigo) {
             if (cantidad < maxVertices) {
                 int posLibre = obtenerPosLibre();
-                vertices[posLibre] = new Vertice(nombreVertice);
+                vertices[posLibre] = new Vertice(codigo);
                 cantidad++;
             }
         }
 
-        public void borrarVertice(String nombreVertice) {
-            int posVaBorrar = buscarPos(new Vertice(nombreVertice));
+        public void borrarVertice(String codigo) {
+            int posVaBorrar = buscarPos(new Vertice(codigo));
 
             for (int i = 0; i < aristas.length; i++) {
                 aristas[posVaBorrar][i] = null;
@@ -32,7 +32,7 @@ public class Grafo {
             cantidad--;
         }
 
-        public void agregarArista(String vInicial, String vFinal, int kilometros) {
+        public void agregarArista(String vInicial, String vFinal, double kilometros) {
             int posVInicial = buscarPos(new Vertice(vInicial));
             int posVFinal = buscarPos(new Vertice(vFinal));
 
