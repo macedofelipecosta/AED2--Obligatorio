@@ -54,7 +54,7 @@ public class Aerolinea implements Comparable<Aerolinea> {
     @Override
     public int compareTo(Aerolinea otraAerolinea) {
         // Comparar los códigos basados en los primeros dos caracteres
-        String codigo1 = this.getCodigo().substring(0, 2);
+        String codigo1 = this.getCodigo().substring(0, 2); // ocasiona error de desborde para cdigos de 1 digito
         String codigo2 = otraAerolinea.getCodigo().substring(0, 2);
         int comparacion = codigo1.compareTo(codigo2);
 
