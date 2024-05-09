@@ -14,6 +14,7 @@ public class ImplementacionSistema implements Sistema {
     ABBPasajeros ABBPasajerosEstandar;
     ABBAerolineas ABBAerolineas;
     ABBAeropuertos ABBAeropuertos;
+    ABBVuelos ABBVuelos;
 
     Grafo Conexiones;
 
@@ -31,6 +32,7 @@ public class ImplementacionSistema implements Sistema {
         ABBAerolineas = new ABBAerolineas();
         ABBAeropuertos = new ABBAeropuertos();
         Conexiones = new Grafo(maxAeropuertos);
+        ABBVuelos =  new ABBVuelos();
         this.maxAerolineas = maxAerolineas;
         this.maxAeropuertos = maxAeropuertos;
         return Retorno.ok();
@@ -184,9 +186,15 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error4("Aeropuerto de destino no existe!");
         }
 
+
+        /*
+         * Si obtenerArista no encuentra los codigos de aeropuerto devuelve una arista con kilometros 0*/
         if (Conexiones.obtenerArista(codigoAeropuertoOrigen, codigoAeropuertoDestino).getKilometros() == kilometros) {
             return Retorno.error5("Ya existe esta conexion!");
         }
+        /*
+        consultar si puede llegar a existir entre dos aeropuertos mas de una arista con diferente costo
+        */
         Conexiones.agregarVertice(codigoAeropuertoOrigen);
         Conexiones.agregarVertice(codigoAeropuertoDestino);
         Conexiones.agregarArista(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);

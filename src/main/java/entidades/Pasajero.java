@@ -60,7 +60,7 @@ public class Pasajero implements Comparable<Pasajero> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pasajero pasajero = (Pasajero) o;
-        return Objects.equals(cedula, pasajero.cedula);
+        return Objects.equals(this.cedula, pasajero.cedula);
     }
 
     @Override

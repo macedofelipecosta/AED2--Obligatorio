@@ -1,9 +1,9 @@
 package tads;
 
-public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
+public class ABBVuelos <Vuelo extends Comparable<Vuelo>> {
     private NodoABB raiz;
 
-    public void insertar(Aerolinea dato) {
+    public void insertar(Vuelo dato) {
         if (raiz == null) {
             raiz = new NodoABB(dato);
         } else {
@@ -11,7 +11,7 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    private void insertar(NodoABB nodo, Aerolinea dato) {
+    private void insertar(NodoABB nodo, Vuelo dato) {
         if (dato.compareTo(nodo.dato) < 0) {
             if (nodo.izq == null) {
                 nodo.izq = new NodoABB(dato);
@@ -27,11 +27,11 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    public boolean pertenece(Aerolinea dato) {
+    public boolean pertenece(Vuelo dato) {
         return pertenece(raiz, dato);
     }
 
-    private boolean pertenece(NodoABB nodo, Aerolinea dato) {
+    private boolean pertenece(NodoABB nodo, Vuelo dato) {
         if (nodo != null) {
             if (nodo.dato.equals(dato))
                 return true;
@@ -45,11 +45,11 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    public Aerolinea obtener(Aerolinea dato) {
+    public Vuelo obtener(Vuelo dato) {
         return obtener(raiz, dato);
     }
 
-    private Aerolinea obtener(NodoABB nodo, Aerolinea dato) {
+    private Vuelo obtener(NodoABB nodo, Vuelo dato) {
         if (nodo != null) {
             if (nodo.dato.equals(dato))
                 return nodo.dato;
@@ -63,11 +63,11 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    public int cantidadElementosRecorridos(Aerolinea dato) {
+    public int cantidadElementosRecorridos(Vuelo dato) {
         return cantidadElementosRecorridos(raiz, dato, 0);
     }
 
-    private int cantidadElementosRecorridos(NodoABB nodo, Aerolinea dato, int num) {
+    private int cantidadElementosRecorridos(NodoABB nodo, Vuelo dato, int num) {
         if (nodo == null) {
             return num;
         }
@@ -81,16 +81,16 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    public int cantidadAerolineasRegistradas() {
-        return cantidadAerolineasRegistradas(raiz);
+    public int cantidadVuelosRegistradas() {
+        return cantidadVuelosRegistradas(raiz);
     }
 
-    private int cantidadAerolineasRegistradas(NodoABB nodo) {
+    private int cantidadVuelosRegistradas(NodoABB nodo) {
         if (nodo == null) {
             return 0;
         }
-        return 1 +cantidadAerolineasRegistradas(nodo.izq) +
-                cantidadAerolineasRegistradas(nodo.der);
+        return 1 + cantidadVuelosRegistradas(nodo.izq ) +
+                cantidadVuelosRegistradas(nodo.der);
     }
 
     public String listarAscendente() {
@@ -105,26 +105,23 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
         }
     }
 
-    public String listarDescendente() {
-        return listarDescendente(raiz);
-    }
-
-    private String listarDescendente(NodoABB nodo) {
+    public String listarDescendente(){return listarDescendente(raiz);}
+    private String listarDescendente(NodoABB nodo){
         if (nodo != null) {
-            return listarDescendente(nodo.der) +""+ nodo.dato +"|"+ listarDescendente(nodo.izq);
+            return listarAscendente(nodo.der) + "" + nodo.dato + "|" + listarAscendente(nodo.izq);
         } else {
             return "";
         }
     }
-
     private class NodoABB {
-        private Aerolinea dato;
+        private Vuelo dato;
         private NodoABB izq;
         private NodoABB der;
 
-        public NodoABB(Aerolinea dato) {
+        public NodoABB(Vuelo dato) {
             this.dato = dato;
         }
     }
+
 
 }

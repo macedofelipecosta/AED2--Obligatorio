@@ -27,9 +27,11 @@ public class Aerolinea implements Comparable<Aerolinea> {
         this.codigo = codigo;
         this.nombre = nombre;
     }
+
     public Aerolinea(String codigo) {
         this.codigo = codigo;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,22 +52,16 @@ public class Aerolinea implements Comparable<Aerolinea> {
 
     /**
      *
-     * **/
+     **/
     @Override
     public int compareTo(Aerolinea otraAerolinea) {
-        // Comparar los códigos basados en los primeros dos caracteres
-        String codigo1 = this.getCodigo().substring(0, 2); // ocasiona error de desborde para cdigos de 1 digito
-        String codigo2 = otraAerolinea.getCodigo().substring(0, 2);
+        // Comparar los códigos basados en los dígitos
+        String codigo1 = this.getCodigo();
+        String codigo2 = otraAerolinea.getCodigo();
         int comparacion = codigo1.compareTo(codigo2);
 
-        // Si los dos primeros caracteres son iguales, comparar los números
-        if (comparacion == 0) {
-            // Obtener los números después de los dos primeros caracteres
-            int num1 = Integer.parseInt(this.getCodigo().substring(2));
-            int num2 = Integer.parseInt(otraAerolinea.getCodigo().substring(2));
-            // Comparar los números
-            comparacion = Integer.compare(num1, num2);
-        }
         return comparacion;
     }
+
+
 }
