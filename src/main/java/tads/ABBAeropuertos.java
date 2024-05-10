@@ -28,6 +28,9 @@ public class ABBAeropuertos<Aeropuerto extends Comparable<Aeropuerto>>{
         }
     }
 
+    /*
+    * Consultar si es correcto crear una instancia de Aeropuerto dentro de esta clase para luego buscarla en vez
+    * de crearla en la clase sistema*/
     public boolean pertenece(Aeropuerto dato) {
         return pertenece(raiz, dato);
     }

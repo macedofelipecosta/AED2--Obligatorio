@@ -8,13 +8,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImplementacionSistema implements Sistema {
-    ABBPasajeros ABBPasajeros;
-    ABBPasajeros ABBPasajerosPlatino;
-    ABBPasajeros ABBPasajerosFrecuente;
-    ABBPasajeros ABBPasajerosEstandar;
-    ABBAerolineas ABBAerolineas;
-    ABBAeropuertos ABBAeropuertos;
-    ABBVuelos ABBVuelos;
+    ABBPasajeros Pasajeros;
+    ABBPasajeros PasajerosPlatino;
+    ABBPasajeros PasajerosFrecuente;
+    ABBPasajeros PasajerosEstandar;
+    ABBAerolineas Aerolineas;
+    ABBAeropuertos Aeropuertos;
+    ABBVuelos Vuelos;
 
     Grafo Conexiones;
 
@@ -25,14 +25,14 @@ public class ImplementacionSistema implements Sistema {
     public Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas) {
         if (maxAeropuertos <= 5) return Retorno.error1("Canitdad de aeropuertos menor o igual a 5");
         if (maxAerolineas <= 3) return Retorno.error2("Cantidad de aerolineas menor o igual a 3");
-        ABBPasajeros = new ABBPasajeros();
-        ABBPasajerosPlatino = new ABBPasajeros();
-        ABBPasajerosFrecuente = new ABBPasajeros();
-        ABBPasajerosEstandar = new ABBPasajeros();
-        ABBAerolineas = new ABBAerolineas();
-        ABBAeropuertos = new ABBAeropuertos();
+        Pasajeros = new ABBPasajeros();
+        PasajerosPlatino = new ABBPasajeros();
+        PasajerosFrecuente = new ABBPasajeros();
+        PasajerosEstandar = new ABBPasajeros();
+        Aerolineas = new ABBAerolineas();
+        Aeropuertos = new ABBAeropuertos();
         Conexiones = new Grafo(maxAeropuertos);
-        ABBVuelos =  new ABBVuelos();
+        Vuelos = new ABBVuelos();
         this.maxAerolineas = maxAerolineas;
         this.maxAeropuertos = maxAeropuertos;
         return Retorno.ok();
@@ -52,22 +52,22 @@ public class ImplementacionSistema implements Sistema {
         }
         Pasajero p = new Pasajero(cedula);
 
-        if (ABBPasajeros.pertenece(p)) {
+        if (Pasajeros.pertenece(p)) {
             return Retorno.error3("El pasajero ya existe en el Sistema!");
         }
         p.setNombre(nombre);
         p.setTelefono(telefono);
         p.setCategoria(categoria);
 
-        ABBPasajeros.insertar(p);
+        Pasajeros.insertar(p);
         if (p.getCategoria() == Categoria.PLATINO) {
-            ABBPasajerosPlatino.insertar(p);
+            PasajerosPlatino.insertar(p);
         }
         if (p.getCategoria() == Categoria.FRECUENTE) {
-            ABBPasajerosFrecuente.insertar(p);
+            PasajerosFrecuente.insertar(p);
         }
         if (p.getCategoria() == Categoria.ESTANDAR) {
-            ABBPasajerosEstandar.insertar(p);
+            PasajerosEstandar.insertar(p);
         }
         return Retorno.ok();
     }
@@ -99,17 +99,17 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error2("La cedula no tiene formato valido!");
         }
         Pasajero p = new Pasajero(cedula);
-        if (ABBPasajeros.obtener(p) == null) {
+        if (Pasajeros.obtener(p) == null) {
             return Retorno.error3("El pasajero no existe!");
         }
-        int elementorRecorridos = ABBPasajeros.cantidadElementosRecorridos(p);
-        return Retorno.ok(elementorRecorridos, ABBPasajeros.obtener(p).toString());
+        int elementorRecorridos = Pasajeros.cantidadElementosRecorridos(p);
+        return Retorno.ok(elementorRecorridos, Pasajeros.obtener(p).toString());
 
     }
 
     @Override
     public Retorno listarPasajerosAscendente() {
-        return Retorno.ok(ABBPasajeros.listarAscendente());
+        return Retorno.ok(Pasajeros.listarAscendente());
     }
 
     @Override
@@ -118,13 +118,13 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.ok("");
         }
         if (categoria.getTexto().equals("Frecuente")) {
-            return Retorno.ok(ABBPasajerosFrecuente.listarAscendente());
+            return Retorno.ok(PasajerosFrecuente.listarAscendente());
         }
         if (categoria.getTexto().equals("Estándar")) {
-            return Retorno.ok(ABBPasajerosEstandar.listarAscendente());
+            return Retorno.ok(PasajerosEstandar.listarAscendente());
         }
         if (categoria.getTexto().equals("Platino")) {
-            return Retorno.ok(ABBPasajerosPlatino.listarAscendente());
+            return Retorno.ok(PasajerosPlatino.listarAscendente());
         }
         return Retorno.ok("");
     }
@@ -132,29 +132,29 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aerolineas
-        if (ABBAerolineas.cantidadAerolineasRegistradas() >= maxAerolineas) {
+        if (Aerolineas.cantidadAerolineasRegistradas() >= maxAerolineas) {
             return Retorno.error1("Cantidad maxima de Aerolineas alcanzada");
         }
         if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
         Aerolinea a = new Aerolinea(codigo, nombre);
-        if (ABBAerolineas.pertenece(a)) {
+        if (Aerolineas.pertenece(a)) {
             return Retorno.error3("Aerolinea ya registrada!");
         }
-        ABBAerolineas.insertar(a);
+        Aerolineas.insertar(a);
         return Retorno.ok();
     }
 
     @Override
     public Retorno listarAerolineasDescendente() {
-        return Retorno.ok(ABBAerolineas.listarDescendente());
+        return Retorno.ok(Aerolineas.listarDescendente());
     }
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aeropuertos
-        if (ABBAeropuertos.cantidadAeropuertosRegistradas() >= maxAeropuertos) {
+        if (Aeropuertos.cantidadAeropuertosRegistradas() >= maxAeropuertos) {
             return Retorno.error1("Cantidad maxima de Aeropuertos alcanzado ");
         }
 
@@ -162,10 +162,10 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
         Aeropuerto a = new Aeropuerto(codigo, nombre);
-        if (ABBAeropuertos.pertenece(a)) {
+        if (Aeropuertos.pertenece(a)) {
             return Retorno.error3("Aeropuerto ya registrado!");
         }
-        ABBAeropuertos.insertar(a);
+        Aeropuertos.insertar(a);
         return Retorno.ok();
     }
 
@@ -178,11 +178,11 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error2("Codigo Aeropuerto origen o destino es nulo o vacio!");
         }
         Aeropuerto AeropuertoOrigen = new Aeropuerto(codigoAeropuertoOrigen);
-        if (!ABBAeropuertos.pertenece(AeropuertoOrigen)) {
+        if (!Aeropuertos.pertenece(AeropuertoOrigen)) {
             return Retorno.error3("Aeropuerto de origen no existe!");
         }
         Aeropuerto AeropuertoDestino = new Aeropuerto(codigoAeropuertoDestino);
-        if (!ABBAeropuertos.pertenece(AeropuertoDestino)) {
+        if (!Aeropuertos.pertenece(AeropuertoDestino)) {
             return Retorno.error4("Aeropuerto de destino no existe!");
         }
 
@@ -204,7 +204,37 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarVuelo(String codigoCiudadOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares, String codigoAerolinea) {
-        return Retorno.noImplementada();
+        if (combustible <= 0 || minutos <= 0 || costoEnDolares <= 0) {
+            return Retorno.error1("Costo en dolares, minutos o combustible no puede ser menor o igual a cero!");
+        }
+        if (codigoCiudadOrigen == null || codigoAeropuertoDestino == null || codigoDeVuelo == null || codigoAerolinea==null) {
+            return Retorno.error2("Alguno de los parametros es nulo!");
+        }
+        if (codigoCiudadOrigen.isEmpty() || codigoAeropuertoDestino.isEmpty() || codigoDeVuelo.isEmpty() || codigoAerolinea.isEmpty()) {
+            return Retorno.error2("Alguno de los parametros esta vacío!");
+        }
+        Aeropuerto aderopuertoOrigen = new Aeropuerto(codigoCiudadOrigen);
+        if (!Aeropuertos.pertenece(aderopuertoOrigen)) {
+            return Retorno.error3("El aeropuerto de origen no existe!");
+        }
+        Aeropuerto aderopuertoDestino = new Aeropuerto(codigoAeropuertoDestino);
+        if (!Aeropuertos.pertenece(aderopuertoDestino)) {
+            return Retorno.error4("El aeropuerto de destino no existe!");
+        }
+        Aerolinea aerolinea = new Aerolinea(codigoAerolinea);
+        if (!Aerolineas.pertenece(aerolinea)) {
+            return Retorno.error5("La aerolinea indicada no existe!");
+        }
+        if (Conexiones.obtenerArista(codigoCiudadOrigen, codigoAeropuertoDestino).getKilometros() == 0) {
+            return Retorno.error6("La conexion entre Aeropuerto de origen y destino no existe!");
+        }
+        Vuelo vuelo = new Vuelo(codigoDeVuelo);
+        if (Vuelos.pertenece(vuelo)) {
+            return Retorno.error7("Ya existe un vuelo con este codigo!");
+        }
+        Vuelo nuevoVuelo = new Vuelo(codigoCiudadOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares, codigoAerolinea);
+        Vuelos.insertar(nuevoVuelo);
+        return Retorno.ok();
     }
 
     @Override
