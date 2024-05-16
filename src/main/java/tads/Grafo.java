@@ -2,82 +2,82 @@ package tads;
 
 public class Grafo {
 
-    private Vertice[] vertices;
-    private Arista[][] aristas;
-    private final int maxVertices;
+    private Aeropuerto[] aeropuertos;
+    private Conexion[][] conexiones;
+    private final int maxConexiones;
     int cantidad = 0;
 
-    public Grafo(int maxVertices) {
-        this.maxVertices = maxVertices;
-        vertices = new Vertice[maxVertices];
-        aristas = new Arista[maxVertices][maxVertices];
+    public Grafo(int maxConexiones) {
+        this.maxConexiones = maxConexiones;
+        aeropuertos = new Aeropuerto[maxConexiones];
+        conexiones = new Conexion[maxConexiones][maxConexiones];
     }
 
-    public void agregarVertice(String codigo) {
-        if (cantidad < maxVertices) {
+    public void agregarAeropuerto(String codigo, String nombre) {
+        if (cantidad < maxConexiones) {
             int posLibre = obtenerPosLibre();
-            vertices[posLibre] = new Vertice(codigo);
+            aeropuertos[posLibre] = new Aeropuerto(codigo, nombre);
             cantidad++;
         }
     }
 
     public void borrarVertice(String codigo) {
-        int posVaBorrar = buscarPos(new Vertice(codigo));
+        int posVaBorrar = buscarPos(new Aeropuerto(codigo));
 
-        for (int i = 0; i < aristas.length; i++) {
-            aristas[posVaBorrar][i] = null;
-            aristas[i][posVaBorrar] = null;
+        for (int i = 0; i < conexiones.length; i++) {
+            conexiones[posVaBorrar][i] = null;
+            conexiones[i][posVaBorrar] = null;
         }
-        vertices[posVaBorrar] = null;
+        aeropuertos[posVaBorrar] = null;
         cantidad--;
     }
 
-    public void agregarArista(String vInicial, String vFinal, double kilometros) {
-        int posVInicial = buscarPos(new Vertice(vInicial));
-        int posVFinal = buscarPos(new Vertice(vFinal));
+    public void agregarConexion(String vInicial, String vFinal, double kilometros) {
+        int posVInicial = buscarPos(new Aeropuerto(vInicial));
+        int posVFinal = buscarPos(new Aeropuerto(vFinal));
 
-        aristas[posVInicial][posVFinal] = new Arista(kilometros);
+        conexiones[posVInicial][posVFinal] = new Conexion(kilometros);
     }
 
-    public void borrarArista(String vInicial, String vFinal) {
-        int posVInicial = buscarPos(new Vertice(vInicial));
-        int posVFinal = buscarPos(new Vertice(vFinal));
+    public void borrarConexion(String vInicial, String vFinal) {
+        int posVInicial = buscarPos(new Aeropuerto(vInicial));
+        int posVFinal = buscarPos(new Aeropuerto(vFinal));
 
-        aristas[posVInicial][posVFinal] = null;
+        conexiones[posVInicial][posVFinal] = null;
     }
 
-    public Arista obtenerArista(String vInicial, String vFinal) {
-        int posVInicial = buscarPos(new Vertice(vInicial));
-        int posVFinal = buscarPos(new Vertice(vFinal));
+    public Conexion obtenerConexion(String vInicial, String vFinal) {
+        int posVInicial = buscarPos(new Aeropuerto(vInicial));
+        int posVFinal = buscarPos(new Aeropuerto(vFinal));
 
         if (posVInicial == -1 || posVFinal == -1) {
-            return new Arista(0);
+            return null;
         } else {
-            return aristas[posVInicial][posVFinal];
+            return conexiones[posVInicial][posVFinal];
         }
 
     }
 
-    public boolean existeVertice(String nombreVertice) {
-        int posABuscar = buscarPos(new Vertice(nombreVertice));
+    public boolean existeAeropuerto(String codigoAeropuerto) {
+        int posABuscar = buscarPos(new Aeropuerto(codigoAeropuerto));
         return posABuscar >= 0;
     }
 
-    public Lista<Vertice> adyacentes(String nombreVertice) {
-        Lista<Vertice> adyacentes = new Lista<>();
-        int posV = buscarPos(new Vertice(nombreVertice));
+    public Lista<Aeropuerto> Adyacentes(String nombreAeropuerto) {
+        Lista<Aeropuerto> adyacentes = new Lista<>();
+        int posV = buscarPos(new Aeropuerto(nombreAeropuerto));
 
-        for (int i = 0; i < aristas.length; i++) {
-            if (aristas[posV][i] != null) {
-                adyacentes.insertar(vertices[i]);
+        for (int i = 0; i < conexiones.length; i++) {
+            if (conexiones[posV][i] != null) {
+                adyacentes.insertar(aeropuertos[i]);
             }
         }
         return adyacentes;
     }
 
-    private int buscarPos(Vertice v) {
-        for (int i = 0; i < vertices.length; i++) {
-            if (vertices[i] != null && vertices[i].equals(v)) {
+    private int buscarPos(Aeropuerto a) {
+        for (int i = 0; i < aeropuertos.length; i++) {
+            if (aeropuertos[i] != null && aeropuertos[i].equals(a)) {
                 return i;
             }
         }
@@ -85,8 +85,8 @@ public class Grafo {
     }
 
     private int obtenerPosLibre() {
-        for (int i = 0; i < vertices.length; i++) {
-            if (vertices[i] == null) {
+        for (int i = 0; i < aeropuertos.length; i++) {
+            if (aeropuertos[i] == null) {
                 return i;
             }
         }

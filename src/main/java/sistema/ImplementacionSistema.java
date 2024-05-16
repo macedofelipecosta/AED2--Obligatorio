@@ -18,8 +18,8 @@ public class ImplementacionSistema implements Sistema {
 
     Grafo Conexiones;
 
-    private int maxAeropuertos;
-    private int maxAerolineas;
+    private static int maxAeropuertos;
+    private static int maxAerolineas;
 
     @Override
     public Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas) {
@@ -104,7 +104,9 @@ public class ImplementacionSistema implements Sistema {
         }
         int elementorRecorridos = Pasajeros.cantidadElementosRecorridos(p);
         return Retorno.ok(elementorRecorridos, Pasajeros.obtener(p).toString());
-
+        /*
+         * Ver el método para que devuelva el pasajero y el int de los elementos recorridos en el mismo return ???
+         * */
     }
 
     @Override
@@ -132,7 +134,7 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aerolineas
-        if (Aerolineas.cantidadAerolineasRegistradas() >= maxAerolineas) {
+        if (maxAerolineas == 0) {
             return Retorno.error1("Cantidad maxima de Aerolineas alcanzada");
         }
         if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
@@ -143,6 +145,7 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error3("Aerolinea ya registrada!");
         }
         Aerolineas.insertar(a);
+        maxAerolineas--;
         return Retorno.ok();
     }
 
@@ -154,18 +157,18 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
         // queda ver lo del minimo o maximo de aeropuertos
-        if (Aeropuertos.cantidadAeropuertosRegistradas() >= maxAeropuertos) {
+        if (maxAeropuertos == 0) {
             return Retorno.error1("Cantidad maxima de Aeropuertos alcanzado ");
         }
 
         if (codigo == null || codigo.isEmpty() || nombre == null || nombre.isEmpty()) {
             return Retorno.error2("Codigo o Nombre vacios o nulos!");
         }
-        Aeropuerto a = new Aeropuerto(codigo, nombre);
-        if (Aeropuertos.pertenece(a)) {
+        if (Conexiones.existeAeropuerto(codigo)) {
             return Retorno.error3("Aeropuerto ya registrado!");
         }
-        Aeropuertos.insertar(a);
+        Conexiones.agregarAeropuerto(codigo, nombre);
+        maxAeropuertos--;
         return Retorno.ok();
     }
 
@@ -177,27 +180,25 @@ public class ImplementacionSistema implements Sistema {
         if (codigoAeropuertoDestino == null || codigoAeropuertoDestino.isEmpty() || codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isEmpty()) {
             return Retorno.error2("Codigo Aeropuerto origen o destino es nulo o vacio!");
         }
-        Aeropuerto AeropuertoOrigen = new Aeropuerto(codigoAeropuertoOrigen);
-        if (!Aeropuertos.pertenece(AeropuertoOrigen)) {
+
+        if (!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)) {
             return Retorno.error3("Aeropuerto de origen no existe!");
         }
-        Aeropuerto AeropuertoDestino = new Aeropuerto(codigoAeropuertoDestino);
-        if (!Aeropuertos.pertenece(AeropuertoDestino)) {
+
+        if (!Conexiones.existeAeropuerto(codigoAeropuertoDestino)) {
             return Retorno.error4("Aeropuerto de destino no existe!");
         }
 
-
         /*
          * Si obtenerArista no encuentra los codigos de aeropuerto devuelve una arista con kilometros 0*/
-        if (Conexiones.obtenerArista(codigoAeropuertoOrigen, codigoAeropuertoDestino).getKilometros() == kilometros) {
+        if (Conexiones.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)!= null) {
             return Retorno.error5("Ya existe esta conexion!");
         }
         /*
         consultar si puede llegar a existir entre dos aeropuertos mas de una arista con diferente costo
         */
-        Conexiones.agregarVertice(codigoAeropuertoOrigen);
-        Conexiones.agregarVertice(codigoAeropuertoDestino);
-        Conexiones.agregarArista(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+
+        Conexiones.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
 
         return Retorno.ok();
     }
@@ -207,25 +208,25 @@ public class ImplementacionSistema implements Sistema {
         if (combustible <= 0 || minutos <= 0 || costoEnDolares <= 0) {
             return Retorno.error1("Costo en dolares, minutos o combustible no puede ser menor o igual a cero!");
         }
-        if (codigoCiudadOrigen == null || codigoAeropuertoDestino == null || codigoDeVuelo == null || codigoAerolinea==null) {
+        if (codigoCiudadOrigen == null || codigoAeropuertoDestino == null || codigoDeVuelo == null || codigoAerolinea == null) {
             return Retorno.error2("Alguno de los parametros es nulo!");
         }
         if (codigoCiudadOrigen.isEmpty() || codigoAeropuertoDestino.isEmpty() || codigoDeVuelo.isEmpty() || codigoAerolinea.isEmpty()) {
             return Retorno.error2("Alguno de los parametros esta vacío!");
         }
-        Aeropuerto aderopuertoOrigen = new Aeropuerto(codigoCiudadOrigen);
-        if (!Aeropuertos.pertenece(aderopuertoOrigen)) {
+
+        if (!Conexiones.existeAeropuerto(codigoCiudadOrigen)) {
             return Retorno.error3("El aeropuerto de origen no existe!");
         }
-        Aeropuerto aderopuertoDestino = new Aeropuerto(codigoAeropuertoDestino);
-        if (!Aeropuertos.pertenece(aderopuertoDestino)) {
+
+        if (!Conexiones.existeAeropuerto(codigoAeropuertoDestino)) {
             return Retorno.error4("El aeropuerto de destino no existe!");
         }
         Aerolinea aerolinea = new Aerolinea(codigoAerolinea);
         if (!Aerolineas.pertenece(aerolinea)) {
             return Retorno.error5("La aerolinea indicada no existe!");
         }
-        if (Conexiones.obtenerArista(codigoCiudadOrigen, codigoAeropuertoDestino).getKilometros() == 0) {
+        if (Conexiones.obtenerConexion(codigoCiudadOrigen, codigoAeropuertoDestino)==null) {
             return Retorno.error6("La conexion entre Aeropuerto de origen y destino no existe!");
         }
         Vuelo vuelo = new Vuelo(codigoDeVuelo);

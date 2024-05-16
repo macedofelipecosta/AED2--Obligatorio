@@ -1,10 +1,18 @@
-package entidades;
+package tads;
 
 import java.util.Objects;
 
-public class Aeropuerto implements Comparable<Aeropuerto>{
+public class Aeropuerto {
     private String codigo;
     private String nombre;
+
+    public Aeropuerto(String codigo, String nombre) {
+        this.codigo = codigo;
+        this.nombre=nombre;
+    }
+    public Aeropuerto(String codigo){
+        this.codigo=codigo;
+    }
 
     public String getCodigo() {
         return codigo;
@@ -22,13 +30,6 @@ public class Aeropuerto implements Comparable<Aeropuerto>{
         this.nombre = nombre;
     }
 
-    public Aeropuerto(String codigo, String nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
-    public Aeropuerto(String codigo) {
-        this.codigo = codigo;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,26 +39,18 @@ public class Aeropuerto implements Comparable<Aeropuerto>{
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(codigo);
-    }
-
-    @Override
     public String toString() {
-        return codigo + ";" + nombre;
+        return "Aeropuerto{" +
+                "codigo='" + codigo + '\'' +
+                '}';
     }
 
-    /**
-     *
-     * **/
-    @Override
+
     public int compareTo(Aeropuerto otroAeropuerto) {
-        // Comparar los códigos basados en los primeros dos caracteres
         String codigo1 = this.getCodigo();
         String codigo2 = otroAeropuerto.getCodigo();
         int comparacion = codigo1.compareTo(codigo2);
 
         return comparacion;
     }
-
 }
