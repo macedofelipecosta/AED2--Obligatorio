@@ -240,7 +240,7 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno listadoAeropuertosCantDeEscalas(String codigoAeropuertoOrigen, int cantidad, String codigoAerolinea) {
-        return Retorno.noImplementada();
+        return Retorno.ok(Conexiones.listadoAeropuertosCantEscalas(codigoAeropuertoOrigen,cantidad,codigoAerolinea));
     }
 
     @Override

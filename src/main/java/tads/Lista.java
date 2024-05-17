@@ -99,6 +99,7 @@ public class Lista<T> {
 
         @Override
         public String toString() {
+
             return dato.toString();
         }
     }

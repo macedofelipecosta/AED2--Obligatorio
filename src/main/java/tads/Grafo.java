@@ -1,20 +1,22 @@
 package tads;
 
+import entidades.*;
+
 public class Grafo {
 
     private Aeropuerto[] aeropuertos;
     private Conexion[][] conexiones;
-    private final int maxConexiones;
+    private final int maxAeropuertos;
     int cantidad = 0;
 
-    public Grafo(int maxConexiones) {
-        this.maxConexiones = maxConexiones;
-        aeropuertos = new Aeropuerto[maxConexiones];
-        conexiones = new Conexion[maxConexiones][maxConexiones];
+    public Grafo(int maxAeropuertos) {
+        this.maxAeropuertos = maxAeropuertos;
+        aeropuertos = new Aeropuerto[maxAeropuertos];
+        conexiones = new Conexion[maxAeropuertos][maxAeropuertos];
     }
 
     public void agregarAeropuerto(String codigo, String nombre) {
-        if (cantidad < maxConexiones) {
+        if (cantidad < maxAeropuertos) {
             int posLibre = obtenerPosLibre();
             aeropuertos[posLibre] = new Aeropuerto(codigo, nombre);
             cantidad++;
@@ -93,5 +95,34 @@ public class Grafo {
         return -1;
     }
 
+    public String listadoAeropuertosCantEscalas(String codigoAeropuertoOrigen, int cantidad, String codigoAerolinea) {
+        int posicionInicial= buscarPos(new Aeropuerto(codigoAeropuertoOrigen));
+        boolean[] visitados = new boolean[maxAeropuertos];
+        Cola<Integer> cola = new Cola<>();
+        String resultado="";
+        int saltos=cantidad;
+
+        cola.encolar(posicionInicial);
+        visitados[posicionInicial]=true;
+
+        while (!cola.esVacia()) {
+            int pos = cola.desencolar();
+            resultado= resultado + aeropuertos[pos].toString();
+            System.out.println(aeropuertos[pos]);
+            for (int i = 0; i < conexiones.length; i++) {
+                if (conexiones[posicionInicial][i] != null && !visitados[i]) {
+                    cola.encolar(i);
+                    visitados[i] = true;
+
+                }
+            }
+
+        }
+
+
+
+
+        return resultado;
+    }
 
 }
