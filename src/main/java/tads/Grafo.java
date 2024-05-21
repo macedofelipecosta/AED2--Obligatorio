@@ -65,9 +65,9 @@ public class Grafo {
         return posABuscar >= 0;
     }
 
-    public Lista<Aeropuerto> Adyacentes(String nombreAeropuerto) {
+    public Lista<Aeropuerto> Adyacentes(String codigoAeropuerto) {
         Lista<Aeropuerto> adyacentes = new Lista<>();
-        int posV = buscarPos(new Aeropuerto(nombreAeropuerto));
+        int posV = buscarPos(new Aeropuerto(codigoAeropuerto));
 
         for (int i = 0; i < conexiones.length; i++) {
             if (conexiones[posV][i] != null) {
@@ -105,22 +105,18 @@ public class Grafo {
         cola.encolar(posicionInicial);
         visitados[posicionInicial]=true;
 
-        while (!cola.esVacia()) {
-            int pos = cola.desencolar();
-            resultado= resultado + aeropuertos[pos].toString();
-            System.out.println(aeropuertos[pos]);
-            for (int i = 0; i < conexiones.length; i++) {
-                if (conexiones[posicionInicial][i] != null && !visitados[i]) {
-                    cola.encolar(i);
-                    visitados[i] = true;
+            while (!cola.esVacia()) {
+                int pos = cola.desencolar();
+                resultado = resultado + aeropuertos[pos].toString();
+                System.out.println(aeropuertos[pos]);
+                for (int i = 0; i < conexiones.length; i++) {
+                    if (conexiones[posicionInicial][i] != null && !visitados[i]) {
+                        cola.encolar(i);
+                        visitados[i] = true;
 
+                    }
                 }
             }
-
-        }
-
-
-
 
         return resultado;
     }

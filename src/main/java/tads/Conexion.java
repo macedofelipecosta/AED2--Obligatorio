@@ -1,12 +1,21 @@
 package tads;
 
+import entidades.Vuelo;
+
 import java.util.Objects;
 
 public class Conexion {
     public double kilometros;
 
+    private Lista<Vuelo> vuelos;
+
     public Conexion(double kilometros) {
         this.kilometros = kilometros;
+        vuelos= new Lista<Vuelo>();
+    }
+
+    public Lista<Vuelo> getVuelos() {
+        return vuelos;
     }
 
     public double getKilometros() {
