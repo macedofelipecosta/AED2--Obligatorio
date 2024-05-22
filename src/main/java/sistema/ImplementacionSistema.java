@@ -242,8 +242,10 @@ public class ImplementacionSistema implements Sistema {
     @Override
     public Retorno listadoAeropuertosCantDeEscalas(String codigoAeropuertoOrigen, int cantidad, String codigoAerolinea) {
         if (cantidad<1){return Retorno.error1("Cantidad de escalas menor a 1!");}
-        if (!Aerolineas.pertenece(codigoAerolinea)){ return Retorno.error3("Aerolinea no registrada!");}
         if(!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)){return Retorno.error2("Aeropuerto de origen no existe!");}
+        Aerolinea a= new Aerolinea(codigoAerolinea);
+        if (!Aerolineas.pertenece(a)){ return Retorno.error3("Aerolinea no registrada!");}
+
 
         return Retorno.ok(Conexiones.listadoAeropuertosCantEscalas(codigoAeropuertoOrigen,cantidad,codigoAerolinea));
     }

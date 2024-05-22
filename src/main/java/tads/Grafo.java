@@ -96,27 +96,34 @@ public class Grafo {
     }
 
     public String listadoAeropuertosCantEscalas(String codigoAeropuertoOrigen, int cantidad, String codigoAerolinea) {
-        int posicionInicial= buscarPos(new Aeropuerto(codigoAeropuertoOrigen));
+        int posicionInicial = buscarPos(new Aeropuerto(codigoAeropuertoOrigen));
         boolean[] visitados = new boolean[maxAeropuertos];
         Cola<Integer> cola = new Cola<>();
-        String resultado="";
-        int saltos=cantidad;
+        String resultado = "";
+        int saltos = cantidad;
+
 
         cola.encolar(posicionInicial);
-        visitados[posicionInicial]=true;
+        visitados[posicionInicial] = true;
 
-            while (!cola.esVacia()) {
-                int pos = cola.desencolar();
+        while (!cola.esVacia()) {
+
+            int pos = cola.desencolar();
+
                 resultado = resultado + aeropuertos[pos].toString();
-                System.out.println(aeropuertos[pos]);
-                for (int i = 0; i < conexiones.length; i++) {
-                    if (conexiones[posicionInicial][i] != null && !visitados[i]) {
-                        cola.encolar(i);
-                        visitados[i] = true;
 
-                    }
+
+            System.out.println(aeropuertos[pos]);
+            for (int i = 0; i < conexiones.length; i++) {
+
+                if (conexiones[posicionInicial][i] != null && !visitados[i] /*&& conexiones[posicionInicial][i].getVuelos().recuperar()*/) {
+                    cola.encolar(i);
+                    visitados[i] = true;
+
                 }
             }
+
+        }
 
         return resultado;
     }
