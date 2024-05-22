@@ -100,31 +100,48 @@ public class Grafo {
         boolean[] visitados = new boolean[maxAeropuertos];
         Cola<Integer> cola = new Cola<>();
         String resultado = "";
-        int saltos = cantidad;
-
-
+        int pos;
+        int escalas = 0;
         cola.encolar(posicionInicial);
         visitados[posicionInicial] = true;
 
+
         while (!cola.esVacia()) {
+            pos = cola.desencolar();
 
-            int pos = cola.desencolar();
-
-                resultado = resultado + aeropuertos[pos].toString();
-
-
+                    resultado = resultado + aeropuertos[pos].toString();
             System.out.println(aeropuertos[pos]);
-            for (int i = 0; i < conexiones.length; i++) {
 
-                if (conexiones[posicionInicial][i] != null && !visitados[i] /*&& conexiones[posicionInicial][i].getVuelos().recuperar()*/) {
-                    cola.encolar(i);
-                    visitados[i] = true;
+            for (int i = 0; i < conexiones.length; i++) {
+                if (conexiones[posicionInicial][i] != null && !visitados[i]) {
+
+                    Lista<String> aux = conexiones[posicionInicial][i].getCodigosAerolineas();
+                    if (aux.existe(codigoAerolinea)) {
+                        cola.encolarOrdenado(i);
+                        visitados[i] = true;
+                    }
 
                 }
             }
 
-        }
+            if (escalas <= cantidad && pos != 0 && escalas != 1) {
+                for (int i = 0; i < conexiones.length; i++) {
+                    if (conexiones[pos][i] != null && !visitados[i]) {
+                        Lista<String> aux = conexiones[pos][i].getCodigosAerolineas();
+                        if (aux.existe(codigoAerolinea)) {
+                            cola.encolarOrdenado(i);
+                            visitados[i] = true;
+                        }
+                    }
+                }
 
+            }
+            escalas++;
+        }
+        int lastIndex = resultado.lastIndexOf('|');
+        if (lastIndex != -1) {
+            resultado = resultado.substring(0, lastIndex) + resultado.substring(lastIndex + 1);
+        }
         return resultado;
     }
 

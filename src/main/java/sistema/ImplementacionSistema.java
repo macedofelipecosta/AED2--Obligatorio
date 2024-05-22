@@ -236,12 +236,13 @@ public class ImplementacionSistema implements Sistema {
         }
         Vuelo nuevoVuelo = new Vuelo(codigoCiudadOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares, codigoAerolinea);
         conexion.getVuelos().insertar(nuevoVuelo);
+        conexion.getCodigosAerolineas().insertar(codigoAerolinea);
         return Retorno.ok();
     }
 
     @Override
     public Retorno listadoAeropuertosCantDeEscalas(String codigoAeropuertoOrigen, int cantidad, String codigoAerolinea) {
-        if (cantidad<1){return Retorno.error1("Cantidad de escalas menor a 1!");}
+        if (cantidad<0){return Retorno.error1("Cantidad de escalas menor a 1!");}
         if(!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)){return Retorno.error2("Aeropuerto de origen no existe!");}
         Aerolinea a= new Aerolinea(codigoAerolinea);
         if (!Aerolineas.pertenece(a)){ return Retorno.error3("Aerolinea no registrada!");}

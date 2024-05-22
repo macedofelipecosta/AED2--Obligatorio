@@ -40,7 +40,7 @@ public class Aeropuerto {
 
     @Override
     public String toString() {
-        return codigo +";"+ nombre;
+        return codigo +";"+ nombre + "|";
     }
 
 

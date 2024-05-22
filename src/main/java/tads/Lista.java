@@ -61,6 +61,7 @@ public class Lista<T> {
     }
 
 
+
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             private NodoLista<T> aux = inicio;

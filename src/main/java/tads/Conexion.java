@@ -8,16 +8,20 @@ public class Conexion {
     public double kilometros;
 
     private Lista<Vuelo> vuelos;
+    private Lista<String> codigosAerolineas;
 
     public Conexion(double kilometros) {
         this.kilometros = kilometros;
-        vuelos= new Lista<Vuelo>();
+        vuelos = new Lista<Vuelo>();
+        codigosAerolineas = new Lista<String>();
     }
 
     public Lista<Vuelo> getVuelos() {
         return vuelos;
     }
-
+    public Lista<String> getCodigosAerolineas(){
+        return codigosAerolineas;
+    }
     public double getKilometros() {
         return kilometros;
     }

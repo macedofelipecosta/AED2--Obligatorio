@@ -1,6 +1,6 @@
 package tads;
 
-    public class Cola<T> {
+    public class Cola<T extends Comparable<T>> {
 
         private NodoCola<T> inicio;
         private NodoCola<T> fin;
@@ -13,6 +13,30 @@ package tads;
             } else {
                 fin.setSig(new NodoCola<T>(dato));
                 fin = fin.getSig();
+            }
+            this.largo++;
+        }
+
+        public void encolarOrdenado(T dato) {
+            NodoCola<T> nuevoNodo = new NodoCola<>(dato);
+
+            if (inicio == null) {  // Si la cola está vacia
+                inicio = nuevoNodo;
+                fin = nuevoNodo;
+
+            } else if (inicio.getDato().compareTo(dato) > 0) {  // Insertar al inicio
+                nuevoNodo.setSig(inicio);
+                inicio = nuevoNodo;
+            } else {
+                NodoCola<T> actual = inicio;
+                while (actual.getSig() != null && actual.getSig().getDato().compareTo(dato) < 0) {
+                    actual = actual.getSig();
+                }
+                nuevoNodo.setSig(actual.getSig());
+                actual.setSig(nuevoNodo);
+                if (nuevoNodo.getSig() == null) {  // Si se inserto al final, actualizar fin
+                    fin = nuevoNodo;
+                }
             }
             this.largo++;
         }
@@ -31,7 +55,6 @@ package tads;
         public boolean esVacia() {
             return this.largo == 0;
         }
-
 
         private class NodoCola<Q> {
             private Q dato;
