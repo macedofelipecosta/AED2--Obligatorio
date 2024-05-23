@@ -109,7 +109,7 @@ public class Grafo {
         while (!cola.esVacia()) {
             pos = cola.desencolar();
 
-                    resultado = resultado + aeropuertos[pos].toString();
+            resultado = resultado + aeropuertos[pos].toString();
             System.out.println(aeropuertos[pos]);
 
             for (int i = 0; i < conexiones.length; i++) {
@@ -143,6 +143,104 @@ public class Grafo {
             resultado = resultado.substring(0, lastIndex) + resultado.substring(lastIndex + 1);
         }
         return resultado;
+    }
+
+    public double DijkstraInt(String codigoOrigen, String codigoDestino) {
+        int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
+        int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
+
+        boolean[] visitados = new boolean[maxAeropuertos];
+        double[] costos = new double[maxAeropuertos];
+        String[] vengo = new String[maxAeropuertos];
+
+        for (int i = 0; i < maxAeropuertos; i++) {
+            costos[i] = Integer.MAX_VALUE;
+            //vengo[i]="-";
+            visitados[i] = false;
+        }
+        costos[posVOrigen] = 0;
+
+
+        for (int v = 0; v < cantidad; v++) {
+            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(costos, visitados);
+
+            if (pos != -1) {
+                visitados[pos] = true;
+
+                for (int i = 0; i < conexiones.length; i++) {
+                    if (conexiones[pos][i] != null && !visitados[i]) {
+                        double distanciaNueva = costos[pos] + conexiones[pos][i].kilometros;
+                        if (distanciaNueva < costos[i]) {
+                            costos[i] = distanciaNueva;
+                            vengo[i] = aeropuertos[pos].toString();
+                        }
+                    }
+                }
+            }
+        }
+        String respuesta = "";
+        for (int i = 0; i < vengo.length; i++) {
+            if (vengo[i] != null) {
+                respuesta = respuesta + vengo[i];
+            }
+        }
+
+        return costos[posVDestino];
+    }
+
+    public String DijkstraTxt(String codigoOrigen, String codigoDestino) {
+        int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
+        int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
+
+        boolean[] visitados = new boolean[maxAeropuertos];
+        double[] costos = new double[maxAeropuertos];
+        String[] vengo = new String[maxAeropuertos];
+        String respuesta = "";
+
+        for (int i = 0; i < maxAeropuertos; i++) {
+            costos[i] = Integer.MAX_VALUE;
+            //vengo[i]="-";
+            visitados[i] = false;
+        }
+        costos[posVOrigen] = 0;
+
+
+        for (int v = 0; v < cantidad; v++) {
+            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(costos, visitados);
+
+            if (pos != -1) {
+                visitados[pos] = true;
+
+                for (int i = 0; i < conexiones.length; i++) {
+                    if (conexiones[pos][i] != null && !visitados[i]) {
+                        double distanciaNueva = costos[pos] + conexiones[pos][i].kilometros;
+                        if (distanciaNueva < costos[i]) {
+                            costos[i] = distanciaNueva;
+                            vengo[i] = aeropuertos[pos].toString();
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < vengo.length; i++) {
+            if (vengo[i] != null) {
+                respuesta = respuesta + vengo[i];
+            }
+        }
+        return respuesta;
+    }
+
+    private int obtenerSiguenteVerticeNoVisitadoDeMenorCosto(double[] costos, boolean[] visitados) {
+        int posMin = -1;
+        double min = Integer.MAX_VALUE;
+        for (int i = 0; i < maxAeropuertos; i++) {
+            if (!visitados[i] && costos[i] < min) {
+                min = costos[i];
+                posMin = i;
+            }
+        }
+        return posMin;
     }
 
 }
