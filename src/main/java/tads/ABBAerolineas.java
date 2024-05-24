@@ -106,7 +106,12 @@ public class ABBAerolineas<Aerolinea extends Comparable<Aerolinea>> {
     }
 
     public String listarDescendente() {
-        return listarDescendente(raiz);
+        String respuesta=listarDescendente(raiz);
+        int lastIndex = respuesta.lastIndexOf('|');
+        if (lastIndex != -1) {
+            respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
+        }
+        return respuesta;
     }
 
     private String listarDescendente(NodoABB nodo) {

@@ -271,17 +271,34 @@ public class ImplementacionSistema implements Sistema {
         if(!Conexiones.existeAeropuerto(codigoCiudadOrigen)){
             return Retorno.error3("No existe aeropuerto de origen!");
         }
-        if ((int)Conexiones.DijkstraInt(codigoCiudadOrigen, codigoCiudadDestino)==Integer.MAX_VALUE) {
+        if ((int)Conexiones.costoMinimoKilometrosDouble(codigoCiudadOrigen, codigoCiudadDestino)==Integer.MAX_VALUE) {
             return Retorno.error2("No hay camino!");
         }
 
 
-        return Retorno.ok((int) Conexiones.DijkstraInt(codigoCiudadOrigen, codigoCiudadDestino), Conexiones.DijkstraTxt(codigoCiudadOrigen, codigoCiudadDestino));
+        return Retorno.ok((int) Conexiones.costoMinimoKilometrosDouble(codigoCiudadOrigen, codigoCiudadDestino), Conexiones.costoMinimoKilometrosTxt(codigoCiudadOrigen, codigoCiudadDestino));
     }
 
     @Override
     public Retorno viajeCostoMinimoEnMinutos(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        return Retorno.noImplementada();
+        if (codigoAeropuertoOrigen == null || codigoAeropuertoDestino == null) {
+            return Retorno.error1("Alguno de los codigos es nulo!");
+        }
+        if (codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoDestino.isEmpty()) {
+            return Retorno.error1("Alguno de los codigos esta vacio!");
+        }
+        if (!Conexiones.existeAeropuerto(codigoAeropuertoDestino)) {
+            return Retorno.error4("No existe aeropuerto destino!");
+        }
+        if(!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)){
+            return Retorno.error3("No existe aeropuerto de origen!");
+        }
+        if ((int)Conexiones.costoMinimoKilometrosDouble(codigoAeropuertoOrigen, codigoAeropuertoDestino)==Integer.MAX_VALUE) {
+            return Retorno.error2("No hay camino!");
+        }
+
+
+        return Retorno.ok((int) Conexiones.costoMinimoMinutosDouble(codigoAeropuertoOrigen, codigoAeropuertoDestino), Conexiones.costoMinimoMinutosTxt(codigoAeropuertoOrigen, codigoAeropuertoDestino));
     }
 
 

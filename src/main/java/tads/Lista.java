@@ -46,7 +46,10 @@ public class Lista<T> {
         return largo == 0;
     }
 
-
+public T devolverPerimero(){
+        if (inicio!=null){return this.inicio.dato;}
+        else return null;
+}
     public void imprimirDatos() {
         NodoLista<T> aux = inicio;
         while (aux != null) {

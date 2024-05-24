@@ -80,7 +80,12 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
     }
 
     public String listarAscendente() {
-        return listarAscendente(raiz);
+        String respuesta=listarAscendente(raiz);
+        int lastIndex = respuesta.lastIndexOf('|');
+        if (lastIndex != -1) {
+            respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
+        }
+        return respuesta;
     }
 
     private String listarAscendente(NodoABB nodo) {

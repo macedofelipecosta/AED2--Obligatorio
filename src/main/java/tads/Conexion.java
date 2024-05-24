@@ -14,6 +14,7 @@ public class Conexion {
         this.kilometros = kilometros;
         vuelos = new Lista<Vuelo>();
         codigosAerolineas = new Lista<String>();
+
     }
 
     public Lista<Vuelo> getVuelos() {
@@ -25,7 +26,6 @@ public class Conexion {
     public double getKilometros() {
         return kilometros;
     }
-
     public void setKilometros(double kilometros) {
         this.kilometros = kilometros;
     }
