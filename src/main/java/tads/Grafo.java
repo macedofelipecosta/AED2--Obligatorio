@@ -272,10 +272,11 @@ public class Grafo {
         aux[i] = aeropuertos[posVDestino].toString();
 
 
-        String[] vengoSinDuplicados = Arrays.stream(vengo).distinct().toArray(String[]::new);
+        String[] vengoSinDuplicados = Arrays.stream(aux).distinct().toArray(String[]::new);
 
         for (int z = 0; z < vengoSinDuplicados.length; z++) {
             if (vengoSinDuplicados[z] != null) {
+               // respuesta = respuesta + buscarPorCodigo(vengoSinDuplicados[z]);
                 respuesta = respuesta + vengoSinDuplicados[z];
             }
         }
@@ -288,5 +289,14 @@ public class Grafo {
         return r;
     }
 
+
+    public Aeropuerto buscarPorCodigo(String codigo) {
+        for (Aeropuerto aeropuerto : aeropuertos) {
+            if (aeropuerto.getCodigo().equals(codigo)) {
+                return aeropuerto;
+            }
+        }
+        return null; // Si no se encuentra el aeropuerto
+    }
 
 }
