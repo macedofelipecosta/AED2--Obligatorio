@@ -4,6 +4,11 @@ package tads;
 
         private NodoCola<T> inicio;
         private NodoCola<T> fin;
+
+        public int getLargo() {
+            return largo;
+        }
+
         private int largo;
 
         public void encolar(T dato) {
@@ -40,6 +45,7 @@ package tads;
             }
             this.largo++;
         }
+
 
         // Pre: !esVacia()
         public T desencolar() {

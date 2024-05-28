@@ -2,7 +2,7 @@ package tads;
 
 import java.util.Objects;
 
-public class Aeropuerto {
+public class Aeropuerto implements Comparable<Aeropuerto> {
     private String codigo;
     private String nombre;
 

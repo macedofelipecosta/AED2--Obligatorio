@@ -1,9 +1,17 @@
 package tads;
 
+import entidades.Vuelo;
+
 import java.util.Iterator;
 
 public class Lista<T> {
+
     private NodoLista<T> inicio;
+
+    public int getLargo() {
+        return largo;
+    }
+
     private int largo;
 
     public Lista() {
@@ -14,10 +22,6 @@ public class Lista<T> {
     public void insertar(T dato) {
         inicio = new NodoLista<T>(dato, inicio);
         largo++;
-    }
-
-    public int largo() {
-        return largo;
     }
 
     public boolean existe(T dato) {
@@ -31,37 +35,11 @@ public class Lista<T> {
         return false;
     }
 
-    public T recuperar(T dato) {
-        NodoLista<T> aux = inicio;
-        while (aux != null) {
-            if (aux.dato.equals(dato)) {
-                return aux.dato;
-            }
-            aux = aux.sig;
-        }
-        return null;
-    }
-
     public boolean esVacia() {
         return largo == 0;
     }
 
-public T devolverPerimero(){
-        if (inicio!=null){return this.inicio.dato;}
-        else return null;
-}
-    public void imprimirDatos() {
-        NodoLista<T> aux = inicio;
-        while (aux != null) {
-            if (aux.sig != null){
-                System.out.print(aux.dato + " -> ");
-            }else{
-                System.out.print(aux.dato);
-            }
-            aux = aux.sig;
-        }
-        System.out.println();
-    }
+
 
 
 
@@ -87,6 +65,7 @@ public T devolverPerimero(){
 
         };
     }
+
     private class NodoLista<T> {
         private T dato;
         private NodoLista<T> sig;
@@ -103,7 +82,6 @@ public T devolverPerimero(){
 
         @Override
         public String toString() {
-
             return dato.toString();
         }
     }

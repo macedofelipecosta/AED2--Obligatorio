@@ -1,5 +1,8 @@
 package tads;
 
+import entidades.Objeto;
+import entidades.Vuelo;
+
 import java.util.Arrays;
 
 public class Grafo {
@@ -145,7 +148,7 @@ public class Grafo {
         return resultado;
     }
 
-    public double costoMinimoKilometrosDouble(String codigoOrigen, String codigoDestino) {
+    public Objeto costoMinimoKilometros(String codigoOrigen, String codigoDestino) {
         int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
         int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
 
@@ -153,43 +156,8 @@ public class Grafo {
         double[] costos = new double[maxAeropuertos];
         String[] vengo = new String[maxAeropuertos];
 
-        for (int i = 0; i < maxAeropuertos; i++) {
-            costos[i] = Integer.MAX_VALUE;
-            visitados[i] = false;
-        }
-        costos[posVOrigen] = 0;
+        Cola<Aeropuerto> vengoP = new Cola<Aeropuerto>();
 
-
-        for (int v = 0; v < cantidad; v++) {
-            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(costos, visitados);
-
-            if (pos != -1) {
-                visitados[pos] = true;
-
-                for (int i = 0; i < conexiones.length; i++) {
-                    if (conexiones[pos][i] != null && !visitados[i]) {
-                        double distanciaNueva = costos[pos] + conexiones[pos][i].kilometros;
-                        if (distanciaNueva < costos[i]) {
-                            costos[i] = distanciaNueva;
-                            vengo[i] = aeropuertos[pos].toString();
-                        }
-                    }
-                }
-            }
-        }
-
-        return costos[posVDestino];
-    }
-
-    public String costoMinimoKilometrosTxt(String codigoOrigen, String codigoDestino) {
-        int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
-        int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
-
-        boolean[] visitados = new boolean[maxAeropuertos];
-        double[] costos = new double[maxAeropuertos];
-        String[] vengo = new String[maxAeropuertos];
-        Integer[]desde= new Integer[maxAeropuertos];
-        String resp="";
         String respuesta = "";
 
         for (int i = 0; i < maxAeropuertos; i++) {
@@ -197,8 +165,7 @@ public class Grafo {
             visitados[i] = false;
         }
         costos[posVOrigen] = 0;
-        //vengo[0] = aeropuertos[posVOrigen].toString();
-        vengo[maxAeropuertos-1] = aeropuertos[posVDestino].toString();
+        vengo[maxAeropuertos - 1] = aeropuertos[posVDestino].toString();
 
         for (int v = 0; v < cantidad; v++) {
             int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(costos, visitados);
@@ -212,25 +179,37 @@ public class Grafo {
                         if (distanciaNueva < costos[i]) {
                             costos[i] = distanciaNueva;
                             vengo[i] = aeropuertos[pos].toString();
-                            desde[i]= pos;
-                            resp=resp+ aeropuertos[pos].toString();
+                            vengoP.encolar(aeropuertos[pos]);
+
                         }
                     }
                 }
             }
         }
-        resp=resp+aeropuertos[posVDestino].toString();
-        String[] vengoSinDuplicados = Arrays.stream(vengo).distinct().toArray(String[]::new);
-        for (int i = 0; i < vengoSinDuplicados.length; i++) {
-            if (vengoSinDuplicados[i] != null) {
-                respuesta = respuesta + vengoSinDuplicados[i];
+        String[] aux = new String[vengoP.getLargo() + 1];
+
+        int i = 0;
+        while (!vengoP.esVacia()) {
+            aux[i] = vengoP.desencolar().toString();
+            i++;
+        }
+        aux[i] = aeropuertos[posVDestino].toString();
+
+
+        String[] vengoSinDuplicados = Arrays.stream(aux).distinct().toArray(String[]::new);
+
+        for (int z = 0; z < vengoSinDuplicados.length; z++) {
+            if (vengoSinDuplicados[z] != null) {
+                respuesta = respuesta + vengoSinDuplicados[z];
             }
         }
-        int lastIndex = respuesta.lastIndexOf('|');
+        int lastIndex = respuesta.lastIndexOf('|'); // elimina la ultima barra recta
         if (lastIndex != -1) {
             respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
         }
-        return respuesta;
+
+        Objeto r = new Objeto(respuesta, (int) costos[posVDestino]);
+        return r;
     }
 
     private int obtenerSiguenteVerticeNoVisitadoDeMenorCosto(double[] costos, boolean[] visitados) {
@@ -245,98 +224,69 @@ public class Grafo {
         return posMin;
     }
 
-    public double costoMinimoMinutosDouble(String codigoOrigen, String codigoDestino) {
+    public Objeto costoMinimoMinutos(String codigoOrigen, String codigoDestino) {
         int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
         int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
 
         boolean[] visitados = new boolean[maxAeropuertos];
-        double[] tiempo = new double[maxAeropuertos];
+        double[] tiempos = new double[maxAeropuertos];
         String[] vengo = new String[maxAeropuertos];
 
-        for (int i = 0; i < maxAeropuertos; i++) {
-            tiempo[i] = Integer.MAX_VALUE;
-            visitados[i] = false;
-        }
-        tiempo[posVOrigen] = 0;
+        Cola<Aeropuerto> vengoP = new Cola<Aeropuerto>();
 
-
-        for (int v = 0; v < cantidad; v++) {
-            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(tiempo, visitados);
-
-            if (pos != -1) {
-                visitados[pos] = true;
-
-                for (int i = 0; i < conexiones.length; i++) {
-                    if (conexiones[pos][i] != null && !visitados[i]) {
-                       double minutos=0;
-                        if (conexiones[pos][i].getVuelos().devolverPerimero()!=null){
-                            minutos= conexiones[pos][i].getVuelos().devolverPerimero().getMinutos();
-                            // metodo para obtenervuelo con menor cantidad de minutos.
-                        }
-                        double nuevoTiempo = tiempo[pos] + minutos;
-                        if (nuevoTiempo < tiempo[i]) {
-                            tiempo[i] = nuevoTiempo;
-                            vengo[i] = aeropuertos[pos].toString();
-                        }
-                    }
-                }
-            }
-        }
-
-        return tiempo[posVDestino];
-    }
-
-    public String costoMinimoMinutosTxt(String codigoOrigen, String codigoDestino) {
-        int posVOrigen = buscarPos(new Aeropuerto(codigoOrigen));
-        int posVDestino = buscarPos(new Aeropuerto(codigoDestino));
-
-        boolean[] visitados = new boolean[maxAeropuertos];
-        double[] tiempo = new double[maxAeropuertos];
-        String[] vengo = new String[maxAeropuertos];
         String respuesta = "";
 
         for (int i = 0; i < maxAeropuertos; i++) {
-            tiempo[i] = Integer.MAX_VALUE;
+            tiempos[i] = Integer.MAX_VALUE;
             visitados[i] = false;
         }
-        tiempo[posVOrigen] = 0;
-        vengo[0] = aeropuertos[posVOrigen].toString();
-        vengo[maxAeropuertos-1] = aeropuertos[posVDestino].toString();
+        tiempos[posVOrigen] = 0;
+        vengo[maxAeropuertos - 1] = aeropuertos[posVDestino].getCodigo();
 
         for (int v = 0; v < cantidad; v++) {
-            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(tiempo, visitados);
+            int pos = obtenerSiguenteVerticeNoVisitadoDeMenorCosto(tiempos, visitados);
 
             if (pos != -1) {
                 visitados[pos] = true;
 
                 for (int i = 0; i < conexiones.length; i++) {
                     if (conexiones[pos][i] != null && !visitados[i]) {
-                        double minutos=0;
-                        if (conexiones[pos][i].getVuelos().devolverPerimero()!=null){
-                            minutos= conexiones[pos][i].getVuelos().devolverPerimero().getMinutos();
-// en una conexion los diferentes vuelos pueden tener diferentes minutos.
-                            double nuevoTiempo = tiempo[pos] + minutos;
-                            if (nuevoTiempo < tiempo[i]) {
-                                tiempo[i] = nuevoTiempo;
-                                vengo[i] = aeropuertos[pos].toString();
-                            }
-                        }
+                        int menorTiempo = conexiones[pos][i].devolverTiempoMenor();
+                        double tiempoNuevo = tiempos[pos] + menorTiempo;
+                        if (tiempoNuevo < tiempos[i]) {
+                            tiempos[i] = tiempoNuevo;
+                            vengo[i] = aeropuertos[pos].getCodigo();
+                            vengoP.encolar(aeropuertos[pos]); // me sale el aeropuerto 2 porque me lo encola y despues no lo saca
 
+                        }
                     }
                 }
             }
         }
+        String[] aux = new String[vengoP.getLargo() + 1];
+        int i = 0;
+        while (!vengoP.esVacia()) {
+            aux[i] = vengoP.desencolar().toString();
+            i++;
+        }
+        aux[i] = aeropuertos[posVDestino].toString();
+
+
         String[] vengoSinDuplicados = Arrays.stream(vengo).distinct().toArray(String[]::new);
-        for (int i = 0; i < vengoSinDuplicados.length; i++) {
-            if (vengoSinDuplicados[i] != null) {
-                respuesta = respuesta + vengoSinDuplicados[i];
+
+        for (int z = 0; z < vengoSinDuplicados.length; z++) {
+            if (vengoSinDuplicados[z] != null) {
+                respuesta = respuesta + vengoSinDuplicados[z];
             }
         }
-        int lastIndex = respuesta.lastIndexOf('|');
+        int lastIndex = respuesta.lastIndexOf('|'); // elimina la ultima barra recta
         if (lastIndex != -1) {
             respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
         }
-        return respuesta;
+
+        Objeto r = new Objeto(respuesta, (int) tiempos[posVDestino]);
+        return r;
     }
+
 
 }

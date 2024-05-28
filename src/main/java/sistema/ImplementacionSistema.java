@@ -233,6 +233,7 @@ public class ImplementacionSistema implements Sistema {
         Vuelo nuevoVuelo = new Vuelo(codigoCiudadOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares, codigoAerolinea);
         conexion.getVuelos().insertar(nuevoVuelo);
         conexion.getCodigosAerolineas().insertar(codigoAerolinea);
+        conexion.getListaMinutos().insertar((int)nuevoVuelo.getMinutos());
         return Retorno.ok();
     }
 
@@ -267,12 +268,12 @@ public class ImplementacionSistema implements Sistema {
         if(!Conexiones.existeAeropuerto(codigoCiudadOrigen)){
             return Retorno.error3("No existe aeropuerto de origen!");
         }
-        if ((int)Conexiones.costoMinimoKilometrosDouble(codigoCiudadOrigen, codigoCiudadDestino)==Integer.MAX_VALUE) {
+        if (Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato2 ==Integer.MAX_VALUE) {
             return Retorno.error2("No hay camino!");
         }
 
 
-        return Retorno.ok((int) Conexiones.costoMinimoKilometrosDouble(codigoCiudadOrigen, codigoCiudadDestino), Conexiones.costoMinimoKilometrosTxt(codigoCiudadOrigen, codigoCiudadDestino));
+        return Retorno.ok(Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato2,Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato1);
     }
 
     @Override
@@ -289,12 +290,12 @@ public class ImplementacionSistema implements Sistema {
         if(!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)){
             return Retorno.error3("No existe aeropuerto de origen!");
         }
-        if ((int)Conexiones.costoMinimoKilometrosDouble(codigoAeropuertoOrigen, codigoAeropuertoDestino)==Integer.MAX_VALUE) {
+        if (Conexiones.costoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato2==Integer.MAX_VALUE) {
             return Retorno.error2("No hay camino!");
         }
 
 
-        return Retorno.ok((int) Conexiones.costoMinimoMinutosDouble(codigoAeropuertoOrigen, codigoAeropuertoDestino), Conexiones.costoMinimoMinutosTxt(codigoAeropuertoOrigen, codigoAeropuertoDestino));
+        return Retorno.ok(Conexiones.costoMinimoMinutos(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato2, Conexiones.costoMinimoMinutos(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato1);
     }
 
 
