@@ -188,6 +188,8 @@ public class Grafo {
         boolean[] visitados = new boolean[maxAeropuertos];
         double[] costos = new double[maxAeropuertos];
         String[] vengo = new String[maxAeropuertos];
+        Integer[]desde= new Integer[maxAeropuertos];
+        String resp="";
         String respuesta = "";
 
         for (int i = 0; i < maxAeropuertos; i++) {
@@ -210,11 +212,14 @@ public class Grafo {
                         if (distanciaNueva < costos[i]) {
                             costos[i] = distanciaNueva;
                             vengo[i] = aeropuertos[pos].toString();
+                            desde[i]= pos;
+                            resp=resp+ aeropuertos[pos].toString();
                         }
                     }
                 }
             }
         }
+        resp=resp+aeropuertos[posVDestino].toString();
         String[] vengoSinDuplicados = Arrays.stream(vengo).distinct().toArray(String[]::new);
         for (int i = 0; i < vengoSinDuplicados.length; i++) {
             if (vengoSinDuplicados[i] != null) {
@@ -266,6 +271,7 @@ public class Grafo {
                        double minutos=0;
                         if (conexiones[pos][i].getVuelos().devolverPerimero()!=null){
                             minutos= conexiones[pos][i].getVuelos().devolverPerimero().getMinutos();
+                            // metodo para obtenervuelo con menor cantidad de minutos.
                         }
                         double nuevoTiempo = tiempo[pos] + minutos;
                         if (nuevoTiempo < tiempo[i]) {
