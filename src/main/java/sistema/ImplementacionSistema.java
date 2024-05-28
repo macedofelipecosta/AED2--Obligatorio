@@ -13,8 +13,6 @@ public class ImplementacionSistema implements Sistema {
     ABBPasajeros PasajerosFrecuente;
     ABBPasajeros PasajerosEstandar;
     ABBAerolineas Aerolineas;
-    ABBAeropuertos Aeropuertos;
-    ABBVuelos Vuelos;
 
     Grafo Conexiones;
 
@@ -30,9 +28,7 @@ public class ImplementacionSistema implements Sistema {
         PasajerosFrecuente = new ABBPasajeros();
         PasajerosEstandar = new ABBPasajeros();
         Aerolineas = new ABBAerolineas();
-        Aeropuertos = new ABBAeropuertos();
         Conexiones = new Grafo(maxAeropuertos);
-        Vuelos = new ABBVuelos();
         this.maxAerolineas = maxAerolineas;
         this.maxAeropuertos = maxAeropuertos;
         return Retorno.ok();

@@ -195,7 +195,7 @@ public class Grafo {
             visitados[i] = false;
         }
         costos[posVOrigen] = 0;
-        vengo[0] = aeropuertos[posVOrigen].toString();
+        //vengo[0] = aeropuertos[posVOrigen].toString();
         vengo[maxAeropuertos-1] = aeropuertos[posVDestino].toString();
 
         for (int v = 0; v < cantidad; v++) {
@@ -308,7 +308,7 @@ public class Grafo {
                         double minutos=0;
                         if (conexiones[pos][i].getVuelos().devolverPerimero()!=null){
                             minutos= conexiones[pos][i].getVuelos().devolverPerimero().getMinutos();
-
+// en una conexion los diferentes vuelos pueden tener diferentes minutos.
                             double nuevoTiempo = tiempo[pos] + minutos;
                             if (nuevoTiempo < tiempo[i]) {
                                 tiempo[i] = nuevoTiempo;
