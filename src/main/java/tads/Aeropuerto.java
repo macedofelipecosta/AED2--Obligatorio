@@ -3,7 +3,7 @@ package tads;
 import java.util.Objects;
 
 public class Aeropuerto implements Comparable<Aeropuerto> {
-    private String codigo;
+    private final String codigo;
     private String nombre;
 
     public Aeropuerto(String codigo, String nombre) {
@@ -16,18 +16,6 @@ public class Aeropuerto implements Comparable<Aeropuerto> {
 
     public String getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     @Override
@@ -47,8 +35,7 @@ public class Aeropuerto implements Comparable<Aeropuerto> {
     public int compareTo(Aeropuerto otroAeropuerto) {
         String codigo1 = this.getCodigo();
         String codigo2 = otroAeropuerto.getCodigo();
-        int comparacion = codigo1.compareTo(codigo2);
 
-        return comparacion;
+        return codigo1.compareTo(codigo2);
     }
 }

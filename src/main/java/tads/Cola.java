@@ -59,17 +59,12 @@ package tads;
         }
 
         public boolean esVacia() {
-            return this.largo == 0;
+            return this.largo != 0;
         }
 
         private class NodoCola<Q> {
-            private Q dato;
+            private final Q dato;
             private NodoCola<Q> sig;
-
-            public NodoCola(Q dato, NodoCola<Q> sig) {
-                this.dato = dato;
-                this.sig = sig;
-            }
 
             public NodoCola(Q dato) {
                 this.dato = dato;
@@ -77,10 +72,6 @@ package tads;
 
             public Q getDato() {
                 return dato;
-            }
-
-            public void setDato(Q dato) {
-                this.dato = dato;
             }
 
             public NodoCola<Q> getSig() {

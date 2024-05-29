@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Retorno {
     public enum Resultado {
         OK, 
-        ERROR_1, ERROR_2, ERROR_3, ERROR_4, ERROR_5, ERROR_6, ERROR_7, ERROR_8,
+        ERROR_1, ERROR_2, ERROR_3, ERROR_4, ERROR_5, ERROR_6, ERROR_7,
         NO_IMPLEMENTADA
     }
 
@@ -58,10 +58,6 @@ public class Retorno {
         return new Retorno(Resultado.OK, null, valorString);
     }
 
-    public static Retorno ok(int valorInteger) {
-        return ok(valorInteger, null);
-    }
-
     public static Retorno ok(int valorInteger, String valorString) {
         return new Retorno(Resultado.OK, valorInteger, valorString);
     }
@@ -96,18 +92,6 @@ public class Retorno {
 
     public static Retorno error7(String mensaje) {
         return error(Resultado.ERROR_7, mensaje);
-    }
-
-    public static Retorno error8(String mensaje) {
-        return error(Resultado.ERROR_8, mensaje);
-    }
-
-    public static Retorno noImplementada() {
-        return new Retorno(Resultado.NO_IMPLEMENTADA, 0, "");
-    }
-
-    public boolean isOk() {
-        return this.resultado == Resultado.OK;
     }
 
     @Override

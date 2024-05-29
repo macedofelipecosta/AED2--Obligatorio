@@ -1,14 +1,13 @@
 package tads;
 
 import entidades.Objeto;
-import entidades.Vuelo;
 
 import java.util.Arrays;
 
 public class Grafo {
 
-    private Aeropuerto[] aeropuertos;
-    private Conexion[][] conexiones;
+    final private Aeropuerto[] aeropuertos;
+    final private Conexion[][] conexiones;
     private final int maxAeropuertos;
     int cantidad = 0;
 
@@ -26,29 +25,11 @@ public class Grafo {
         }
     }
 
-    public void borrarVertice(String codigo) {
-        int posVaBorrar = buscarPos(new Aeropuerto(codigo));
-
-        for (int i = 0; i < conexiones.length; i++) {
-            conexiones[posVaBorrar][i] = null;
-            conexiones[i][posVaBorrar] = null;
-        }
-        aeropuertos[posVaBorrar] = null;
-        cantidad--;
-    }
-
     public void agregarConexion(String vInicial, String vFinal, double kilometros) {
         int posVInicial = buscarPos(new Aeropuerto(vInicial));
         int posVFinal = buscarPos(new Aeropuerto(vFinal));
 
         conexiones[posVInicial][posVFinal] = new Conexion(kilometros);
-    }
-
-    public void borrarConexion(String vInicial, String vFinal) {
-        int posVInicial = buscarPos(new Aeropuerto(vInicial));
-        int posVFinal = buscarPos(new Aeropuerto(vFinal));
-
-        conexiones[posVInicial][posVFinal] = null;
     }
 
     public Conexion obtenerConexion(String vInicial, String vFinal) {
@@ -66,18 +47,6 @@ public class Grafo {
     public boolean existeAeropuerto(String codigoAeropuerto) {
         int posABuscar = buscarPos(new Aeropuerto(codigoAeropuerto));
         return posABuscar >= 0;
-    }
-
-    public Lista<Aeropuerto> Adyacentes(String codigoAeropuerto) {
-        Lista<Aeropuerto> adyacentes = new Lista<>();
-        int posV = buscarPos(new Aeropuerto(codigoAeropuerto));
-
-        for (int i = 0; i < conexiones.length; i++) {
-            if (conexiones[posV][i] != null) {
-                adyacentes.insertar(aeropuertos[i]);
-            }
-        }
-        return adyacentes;
     }
 
     private int buscarPos(Aeropuerto a) {
@@ -109,7 +78,7 @@ public class Grafo {
         visitados[posicionInicial] = true;
 
 
-        while (!cola.esVacia()) {
+        while (cola.esVacia()) {
             pos = cola.desencolar();
 
             resultado = resultado + aeropuertos[pos].toString();
@@ -189,10 +158,10 @@ public class Grafo {
         String[] vengoSinDuplicadosAux = Arrays.stream(vengo).distinct().toArray(String[]::new);
         String[] aux = new String[vengoP.getLargo() + 1];
         int i = 0;
-        while (!vengoP.esVacia()) {
+        while (vengoP.esVacia()) {
             Aeropuerto aeropuerto = vengoP.desencolar();
             for (int j = 0; j < vengoSinDuplicadosAux.length; j++) {
-                if (aeropuerto.getCodigo() == vengoSinDuplicadosAux[j]) {
+                if (aeropuerto.getCodigo().equals(vengoSinDuplicadosAux[j])) {
                     aux[i] = aeropuerto.toString();
                 }
             }
@@ -215,8 +184,7 @@ public class Grafo {
             respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
         }
 
-        Objeto r = new Objeto(respuesta, (int) costos[posVDestino]);
-        return r;
+        return new Objeto(respuesta, (int) costos[posVDestino]);
     }
 
     private int obtenerSiguenteVerticeNoVisitadoDeMenorCosto(double[] costos, boolean[] visitados) {
@@ -274,15 +242,13 @@ public class Grafo {
         String[] vengoSinDuplicadosAux = Arrays.stream(vengo).distinct().toArray(String[]::new);
         String[] aux = new String[vengoP.getLargo() + 1];
         int i = 0;
-        while (!vengoP.esVacia()) {
+        while (vengoP.esVacia()) {
             Aeropuerto aeropuerto = vengoP.desencolar();
             for (int j = 0; j < vengoSinDuplicadosAux.length; j++) {
-                if (aeropuerto.getCodigo() == vengoSinDuplicadosAux[j]) {
+                if (aeropuerto.getCodigo().equals(vengoSinDuplicadosAux[j])) {
                     aux[i] = aeropuerto.toString();
                 }
             }
-
-            //aux[i] = vengoP.desencolar().toString();
             i++;
         }
         aux[i] = aeropuertos[posVDestino].toString();
@@ -301,8 +267,7 @@ public class Grafo {
             respuesta = respuesta.substring(0, lastIndex) + respuesta.substring(lastIndex + 1);
         }
 
-        Objeto r = new Objeto(respuesta, (int) tiempos[posVDestino]);
-        return r;
+        return new Objeto(respuesta, (int) tiempos[posVDestino]);
     }
 
 

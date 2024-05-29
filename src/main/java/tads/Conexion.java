@@ -6,10 +6,10 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class Conexion {
-    public double kilometros;
-    private Lista<Vuelo> vuelos;
-    private Lista<String> codigosAerolineas;
-    private Lista<Integer> listaMinutos;
+    public final double kilometros;
+   final private Lista<Vuelo> vuelos;
+    final private Lista<String> codigosAerolineas;
+    final private Lista<Integer> listaMinutos;
 
 
     public Conexion(double kilometros) {
@@ -29,14 +29,6 @@ public class Conexion {
 
     public Lista<String> getCodigosAerolineas() {
         return codigosAerolineas;
-    }
-
-    public double getKilometros() {
-        return kilometros;
-    }
-
-    public void setKilometros(double kilometros) {
-        this.kilometros = kilometros;
     }
 
     public int devolverTiempoMenor() {

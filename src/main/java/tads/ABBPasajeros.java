@@ -1,7 +1,5 @@
 package tads;
 
-import entidades.Pasajero;
-
 public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
 
     private NodoABB raiz;
@@ -90,14 +88,14 @@ public class ABBPasajeros<Pasajero extends Comparable<Pasajero>> {
 
     private String listarAscendente(NodoABB nodo) {
         if (nodo != null) {
-            return listarAscendente(nodo.izq) + "" + nodo.dato + "|" + listarAscendente(nodo.der);
+            return listarAscendente(nodo.izq) + nodo.dato + "|" + listarAscendente(nodo.der);
         } else {
             return "";
         }
     }
 
     private class NodoABB {
-        private Pasajero dato;
+        final private Pasajero dato;
         private NodoABB izq;
         private NodoABB der;
 

@@ -29,8 +29,8 @@ public class ImplementacionSistema implements Sistema {
         PasajerosEstandar = new ABBPasajeros();
         Aerolineas = new ABBAerolineas();
         Conexiones = new Grafo(maxAeropuertos);
-        this.maxAerolineas = maxAerolineas;
-        this.maxAeropuertos = maxAeropuertos;
+        ImplementacionSistema.maxAerolineas = maxAerolineas;
+        ImplementacionSistema.maxAeropuertos = maxAeropuertos;
         return Retorno.ok();
     }
 
@@ -43,7 +43,7 @@ public class ImplementacionSistema implements Sistema {
         if (cedula.isEmpty() || nombre.isEmpty() || telefono.isEmpty()) {
             return Retorno.error1("Uno de los parametros esta vacio o es null");
         }
-        if (!validarCedula(cedula)) {
+        if (validarCedula(cedula)) {
             return Retorno.error2("La cedula tiene un formato invalido!");
         }
         Pasajero p = new Pasajero(cedula);
@@ -83,7 +83,7 @@ public class ImplementacionSistema implements Sistema {
         Matcher matcher = pattern.matcher(cedula);
 
         // Verificar si la cédula coincide con el patrón
-        return matcher.matches();
+        return !matcher.matches();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ImplementacionSistema implements Sistema {
         if (cedula == null || cedula.isEmpty()) {
             return Retorno.error1("La cedula esta vacia o es null!");
         }
-        if (!validarCedula(cedula)) {
+        if (validarCedula(cedula)) {
             return Retorno.error2("La cedula no tiene formato valido!");
         }
         Pasajero p = new Pasajero(cedula);
@@ -230,7 +230,7 @@ public class ImplementacionSistema implements Sistema {
         if (conexion.getVuelos().existe(vuelo)) {
             return Retorno.error7("Ya existe un vuelo con este codigo!");
         }
-        Vuelo nuevoVuelo = new Vuelo(codigoCiudadOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares, codigoAerolinea);
+        Vuelo nuevoVuelo = new Vuelo(codigoDeVuelo, minutos);
         conexion.getVuelos().insertar(nuevoVuelo);
         conexion.getCodigosAerolineas().insertar(codigoAerolinea);
         conexion.getListaMinutos().insertar((int)nuevoVuelo.getMinutos());

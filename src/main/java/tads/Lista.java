@@ -1,16 +1,10 @@
 package tads;
 
-import entidades.Vuelo;
-
 import java.util.Iterator;
 
 public class Lista<T> {
 
     private NodoLista<T> inicio;
-
-    public int getLargo() {
-        return largo;
-    }
 
     private int largo;
 
@@ -67,13 +61,8 @@ public class Lista<T> {
     }
 
     private class NodoLista<T> {
-        private T dato;
-        private NodoLista<T> sig;
-
-        public NodoLista(T dato) {
-            this.dato = dato;
-            this.sig = null;
-        }
+        final private T dato;
+        final private NodoLista<T> sig;
 
         public NodoLista(T dato, NodoLista<T> sig) {
             this.dato = dato;

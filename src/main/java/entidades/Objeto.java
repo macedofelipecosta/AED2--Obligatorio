@@ -1,8 +1,8 @@
 package entidades;
 
 public class Objeto {
-    public String dato1;
-    public int dato2;
+    public final String dato1;
+    public final int dato2;
 
 
     public Objeto(String dato1, int dato2) {

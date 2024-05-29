@@ -5,8 +5,8 @@ package interfaz;
  */
 public interface Sistema {
 
-    static final int MIN_AEROPUERTOS = 5;
-    static final int MIN_AEROLINEAS = 3;
+     int MIN_AEROPUERTOS = 5;
+     int MIN_AEROLINEAS = 3;
 
     Retorno inicializarSistema(int maxAeropuertos, int maxAerolineas);
 
