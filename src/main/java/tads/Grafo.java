@@ -113,7 +113,7 @@ public class Grafo {
             pos = cola.desencolar();
 
             resultado = resultado + aeropuertos[pos].toString();
-            System.out.println(aeropuertos[pos]);
+
 
             for (int i = 0; i < conexiones.length; i++) {
                 if (conexiones[posicionInicial][i] != null && !visitados[i]) {
@@ -178,7 +178,7 @@ public class Grafo {
                         double distanciaNueva = costos[pos] + conexiones[pos][i].kilometros;
                         if (distanciaNueva < costos[i]) {
                             costos[i] = distanciaNueva;
-                            vengo[i] = aeropuertos[pos].toString();
+                            vengo[i] = aeropuertos[pos].getCodigo();
                             vengoP.encolar(aeropuertos[pos]);
 
                         }
@@ -186,11 +186,18 @@ public class Grafo {
                 }
             }
         }
+        String[] vengoSinDuplicadosAux = Arrays.stream(vengo).distinct().toArray(String[]::new);
         String[] aux = new String[vengoP.getLargo() + 1];
-
         int i = 0;
         while (!vengoP.esVacia()) {
-            aux[i] = vengoP.desencolar().toString();
+            Aeropuerto aeropuerto = vengoP.desencolar();
+            for (int j = 0; j < vengoSinDuplicadosAux.length; j++) {
+                if (aeropuerto.getCodigo() == vengoSinDuplicadosAux[j]) {
+                    aux[i] = aeropuerto.toString();
+                }
+            }
+
+            //aux[i] = vengoP.desencolar().toString();
             i++;
         }
         aux[i] = aeropuertos[posVDestino].toString();
@@ -263,10 +270,19 @@ public class Grafo {
                 }
             }
         }
+
+        String[] vengoSinDuplicadosAux = Arrays.stream(vengo).distinct().toArray(String[]::new);
         String[] aux = new String[vengoP.getLargo() + 1];
         int i = 0;
         while (!vengoP.esVacia()) {
-            aux[i] = vengoP.desencolar().toString();
+            Aeropuerto aeropuerto = vengoP.desencolar();
+            for (int j = 0; j < vengoSinDuplicadosAux.length; j++) {
+                if (aeropuerto.getCodigo() == vengoSinDuplicadosAux[j]) {
+                    aux[i] = aeropuerto.toString();
+                }
+            }
+
+            //aux[i] = vengoP.desencolar().toString();
             i++;
         }
         aux[i] = aeropuertos[posVDestino].toString();
@@ -276,7 +292,7 @@ public class Grafo {
 
         for (int z = 0; z < vengoSinDuplicados.length; z++) {
             if (vengoSinDuplicados[z] != null) {
-               // respuesta = respuesta + buscarPorCodigo(vengoSinDuplicados[z]);
+                // respuesta = respuesta + buscarPorCodigo(vengoSinDuplicados[z]);
                 respuesta = respuesta + vengoSinDuplicados[z];
             }
         }
@@ -289,14 +305,5 @@ public class Grafo {
         return r;
     }
 
-
-    public Aeropuerto buscarPorCodigo(String codigo) {
-        for (Aeropuerto aeropuerto : aeropuertos) {
-            if (aeropuerto.getCodigo().equals(codigo)) {
-                return aeropuerto;
-            }
-        }
-        return null; // Si no se encuentra el aeropuerto
-    }
 
 }
