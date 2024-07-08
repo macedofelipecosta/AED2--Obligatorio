@@ -54,9 +54,11 @@ public class Pasajero implements Comparable<Pasajero> {
 
     @Override
     public int compareTo(Pasajero o) {
+        // "[^0-9]" va remplazar cualquier caracter que no sea un dígito por ""
         String thisCedula = cedula.replaceAll("[^0-9]", "");
         String recivedCi = o.cedula.replaceAll("[^0-9]", "");
 
+        // parsea el nro String resultante anterior a integer para poder utilizar el compare
         int ci= Integer.parseInt(thisCedula);
         int recive= Integer.parseInt(recivedCi);
 

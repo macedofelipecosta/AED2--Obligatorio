@@ -1,8 +1,16 @@
 package sistema;
 
-import entidades.*;
-import interfaz.*;
-import tads.*;
+import entidades.Aerolinea;
+import entidades.Objeto;
+import entidades.Pasajero;
+import entidades.Vuelo;
+import interfaz.Categoria;
+import interfaz.Retorno;
+import interfaz.Sistema;
+import tads.ABBAerolineas;
+import tads.ABBPasajeros;
+import tads.Conexion;
+import tads.Grafo;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +90,7 @@ public class ImplementacionSistema implements Sistema {
         // Crear un objeto Matcher
         Matcher matcher = pattern.matcher(cedula);
 
-        // Verificar si la cédula coincide con el patrón
+        // Verificar si la cédula coincide con el patrón, se puso ! para poder utilizarlo en el if de altaPasajero
         return !matcher.matches();
     }
 
@@ -129,7 +137,7 @@ public class ImplementacionSistema implements Sistema {
 
     @Override
     public Retorno registrarAerolinea(String codigo, String nombre) {
-        // queda ver lo del minimo o maximo de aerolineas
+
         if (maxAerolineas == 0) {
             return Retorno.error1("Cantidad maxima de Aerolineas alcanzada");
         }
@@ -185,14 +193,9 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error4("Aeropuerto de destino no existe!");
         }
 
-        /*
-         * Si obtenerArista no encuentra los codigos de aeropuerto devuelve una arista con kilometros 0*/
         if (Conexiones.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino) != null) {
             return Retorno.error5("Ya existe esta conexion!");
         }
-        /*
-        consultar si puede llegar a existir entre dos aeropuertos mas de una arista con diferente costo
-        */
 
         Conexiones.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
 
@@ -233,7 +236,7 @@ public class ImplementacionSistema implements Sistema {
         Vuelo nuevoVuelo = new Vuelo(codigoDeVuelo, minutos);
         conexion.getVuelos().insertar(nuevoVuelo);
         conexion.getCodigosAerolineas().insertar(codigoAerolinea);
-        conexion.getListaMinutos().insertar((int)nuevoVuelo.getMinutos());
+        conexion.getListaMinutos().insertar((int) nuevoVuelo.getMinutos());
         return Retorno.ok();
     }
 
@@ -250,7 +253,6 @@ public class ImplementacionSistema implements Sistema {
             return Retorno.error3("Aerolinea no registrada!");
         }
 
-
         return Retorno.ok(Conexiones.listadoAeropuertosCantEscalas(codigoAeropuertoOrigen, cantidad, codigoAerolinea));
     }
 
@@ -265,15 +267,15 @@ public class ImplementacionSistema implements Sistema {
         if (!Conexiones.existeAeropuerto(codigoCiudadDestino)) {
             return Retorno.error4("No existe aeropuerto destino!");
         }
-        if(!Conexiones.existeAeropuerto(codigoCiudadOrigen)){
+        if (!Conexiones.existeAeropuerto(codigoCiudadOrigen)) {
             return Retorno.error3("No existe aeropuerto de origen!");
         }
-        if (Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato2 ==Integer.MAX_VALUE) {
+        if (Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato2 == Integer.MAX_VALUE) {
             return Retorno.error2("No hay camino!");
         }
 
-
-        return Retorno.ok(Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato2,Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino).dato1);
+        Objeto obj= Conexiones.costoMinimoKilometros(codigoCiudadOrigen, codigoCiudadDestino);
+        return Retorno.ok(obj.dato2,obj.dato1);
     }
 
     @Override
@@ -287,15 +289,15 @@ public class ImplementacionSistema implements Sistema {
         if (!Conexiones.existeAeropuerto(codigoAeropuertoDestino)) {
             return Retorno.error4("No existe aeropuerto destino!");
         }
-        if(!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)){
+        if (!Conexiones.existeAeropuerto(codigoAeropuertoOrigen)) {
             return Retorno.error3("No existe aeropuerto de origen!");
         }
-        if (Conexiones.costoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato2==Integer.MAX_VALUE) {
+        if (Conexiones.costoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato2 == Integer.MAX_VALUE) {
             return Retorno.error2("No hay camino!");
         }
 
-
-        return Retorno.ok(Conexiones.costoMinimoMinutos(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato2, Conexiones.costoMinimoMinutos(codigoAeropuertoOrigen, codigoAeropuertoDestino).dato1);
+        Objeto obj = Conexiones.costoMinimoMinutos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+        return Retorno.ok(obj.dato2, obj.dato1);
     }
 
 

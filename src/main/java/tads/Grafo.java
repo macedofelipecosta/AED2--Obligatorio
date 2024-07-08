@@ -77,25 +77,20 @@ public class Grafo {
         cola.encolar(posicionInicial);
         visitados[posicionInicial] = true;
 
-
         while (cola.esVacia()) {
             pos = cola.desencolar();
 
             resultado = resultado + aeropuertos[pos].toString();
 
-
             for (int i = 0; i < conexiones.length; i++) {
                 if (conexiones[posicionInicial][i] != null && !visitados[i]) {
-
                     Lista<String> aux = conexiones[posicionInicial][i].getCodigosAerolineas();
                     if (aux.existe(codigoAerolinea)) {
                         cola.encolarOrdenado(i);
                         visitados[i] = true;
                     }
-
                 }
             }
-
             if (escalas <= cantidad && pos != 0 && escalas != 1) {
                 for (int i = 0; i < conexiones.length; i++) {
                     if (conexiones[pos][i] != null && !visitados[i]) {
@@ -106,7 +101,6 @@ public class Grafo {
                         }
                     }
                 }
-
             }
             escalas++;
         }

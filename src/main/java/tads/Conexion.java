@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Conexion {
     public final double kilometros;
-   final private Lista<Vuelo> vuelos;
+    final private Lista<Vuelo> vuelos;
     final private Lista<String> codigosAerolineas;
     final private Lista<Integer> listaMinutos;
 
@@ -16,13 +16,14 @@ public class Conexion {
         this.kilometros = kilometros;
         vuelos = new Lista<Vuelo>();
         codigosAerolineas = new Lista<String>();
-        listaMinutos= new Lista<Integer>();
+        listaMinutos = new Lista<Integer>();
 
     }
 
     public Lista<Integer> getListaMinutos() {
         return listaMinutos;
     }
+
     public Lista<Vuelo> getVuelos() {
         return vuelos;
     }
